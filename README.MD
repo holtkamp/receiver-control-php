@@ -1,7 +1,8 @@
 # VSX-930 remote control via telnet interface
 A web page built on top of the telnet API described in [resources/VSX-1120-K-RS232.PDF](resources/VSX-1120-K-RS232.PDF).  This page only impelments the power, volume and function selectors - that's all I needed.  The remaining functionality could be easily implemented in the same style and I would welcome Pull Requests that do so.
  
- ## Installation
+## Installation
+
 1\. Clone the Repo:
  
 ````bash
