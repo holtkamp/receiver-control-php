@@ -1,5 +1,5 @@
 # VSX-930 remote control via telnet interface
-A web page built on top of the telnet API described in [resources/VSX-1120-K-RS232.PDF](resources/VSX-1120-K-RS232.PDF).  This page only impelments the power, volume and function selectors - that's all I needed.  The remaining functionality could be easily implemented in the same style and I would welcome Pull Requests that do so.
+A web page built on top of the telnet API described in [resources/VSX-1120-K-RS232.PDF](resources/VSX-1120-K-RS232.PDF).  This page only impelments the power, volume and function selectors - that's all I needed.  The remaining functionality could be easily implemented in the same style and I would welcome Pull Requests that do so. and a note of thanx to Raymond Julian for his article that gave me the idea [Remote control your Pioneer VSX receiver over telnet](http://raymondjulin.com/2012/07/15/remote-control-your-pioneer-vsx-receiver-over-telnet/).
  
 ## Installation
 
