@@ -1,6 +1,7 @@
 {
-  "name": "gordywills/receiver",
+  "name": "gordywills/receiver-control",
   "description": "a single page app to remotely control my Pioneer VSX-930 receiver via telnet",
+  "type": "",
   "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
@@ -15,6 +16,7 @@
     }
   },
   "require": {
+    "php": "^5.5 || ^7.0",
     "graze/telnet-client": ">=2.0.0"
   }
 }

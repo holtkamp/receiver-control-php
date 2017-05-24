@@ -4,7 +4,7 @@ A web page built on top of the telnet API described in [resources/VSX-1120-K-RS2
  ## Installation
 1\. Clone the Repo:
  
- ````bash
+````bash
 $ git clone 
 ````
 
