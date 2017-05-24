@@ -6,7 +6,7 @@ A web page built on top of the telnet API described in [resources/VSX-1120-K-RS2
 1\. Clone the Repo:
  
 ````bash
-$ git clone 
+$ git clone https://bitbucket.org/gordywills/receiver-control.git
 ````
 
 2\. run Composer Install
