@@ -1,0 +1,13 @@
+{
+  "name": "reciever",
+  "version": "1.0.0",
+  "description": "A tool to remotely control my VSX-930",
+  "main": "index.php",
+  "author": "gordy.wills",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jquery-ui-dist": "^1.12.1",
+    "bootstrap": "^3.3.7"
+  }
+}
