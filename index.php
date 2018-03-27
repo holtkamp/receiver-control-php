@@ -4,12 +4,13 @@
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="./node_modules/open-iconic/font/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="receiver.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 </head>
 <body>
 <div class="container-fluid">
+    <br/>
     <div class="jumbotron">
+
         <div class="row">
             <div class="col">
                 <button class="powerOff switchable btn btn-danger"><span class="oi oi-power-standby"></span> Off</button>

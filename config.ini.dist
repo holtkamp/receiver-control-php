@@ -1,4 +1,4 @@
-;config for the reciever in use
+;config for the receiver in use
 
 ;the ip address of your receiver, the default telnet port is 23
 dsn = "ip_address:telnet_port"
