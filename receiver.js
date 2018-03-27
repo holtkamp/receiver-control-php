@@ -99,7 +99,15 @@ var commandAjaxRaw = function (data, callback) {
         dataType: "json",
         success: function (result) {
             console.log("Success: ", result);
-            callback(result);
+
+            if(callback === undefined){
+                console.log("no callback provided");
+            }
+            else{
+                console.log("Invoking callback on result: ", callback);
+                callback(result);
+            }
+
         },
         error: function (xhr, status, thrown) {
             console.log(xhr);
@@ -133,20 +141,45 @@ var sliderSetup = function () {
         },
         stop: function (event, ui) {
             console.log(event, ui);
-            commandAjax('volumeSet', ui.value, volumeChange)
+            data = {
+                command: 'ReceiverControl\\Command\\Volume\\Set',
+                zoneNumber: 1,
+                volume: ui.value,
+                callback: 'volumeChange'
+            };
+            commandAjaxRaw(data, volumeChange)
         }
     });
+};
+
+function updateSliderVolume(result) {
+    if (result.valid) {
+        //var units = "dBi";
+        var units = "";
+        if (result.message === 'Mute') {
+            units = '';
+            $("#custom-handle").text(result.message);
+        } else {
+            $('#volumeSlider').slider("value", result.message);
+        }
+        $('#volumeStatus').html(result.message + units);
+    }
 };
 
 $(document).ready(function () {
     sliderSetup();
     //commandAjax('powerStatus', '', powerChange);
-    commandAjax('volumeStatus', [], volumeChange); //Fetch the "current" volume setting
+    var data = {
+        command: 'ReceiverControl\\Command\\Volume\\Get',
+        zoneNumber: 1,
+        callback: 'volumeChange'
+    };
+    commandAjaxRaw(data, volumeChange); //Fetch the "current" volume setting
     //commandAjax('functionStatus', '', functionChange); //Not supported on a Denon?
 
     $('button[data-command]').click(function () {
         console.log('Clicked button', $(this), 'with data', $(this).data());
-        commandAjaxRaw($(this).data(), powerChange);
+        commandAjaxRaw($(this).data(), eval($(this).data().callback));
     });
 
     $('#functionUp').click(function () {

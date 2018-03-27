@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Volume;
 
+use Assert\Assertion;
 use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
 
 class Set implements Command
 {
-    public const ALIAS = 'volumeSet';
-
     private const MASTER_VOLUME_SET = 'MV';
     private const ZONE2_VOLUME_SET = 'Z2';
 
     public function invoke(int $zoneNumber, float $volume = null): Response
     {
+        Assertion::float($volume);
+
         return $this->invokeHttpGet($zoneNumber, $volume);
     }
 

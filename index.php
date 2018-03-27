@@ -34,13 +34,13 @@
         <br/>
         <div class="row">
             <div class="col">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>"><span class="oi oi-volume-low"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>" data-callback="updateSliderVolume"><span class="oi oi-volume-low"></span></button>
             </div>
             <div class="col text-center">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>"><span class="oi oi-volume-off"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>" data-callback="updateSliderVolume"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>" data-callback="updateSliderVolume"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
                 <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class;?>"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>

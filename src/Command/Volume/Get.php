@@ -6,9 +6,10 @@ namespace ReceiverControl\Command\Volume;
 
 use DOMDocument;
 use DOMXPath;
+use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
 
-class Get
+class Get implements Command
 {
     public const ALIAS = 'volumeGet';
 

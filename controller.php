@@ -15,8 +15,6 @@ use ReceiverControl\Command\Volume\Mute as MuteVolumeCommand;
 use ReceiverControl\Command\Volume\Set as SetVolumeCommand;
 use ReceiverControl\Command\Volume\Up as VolumeUpCommand;
 
-$denonUrl = 'denon';
-
 function getZoneNumber(array $postData = null): int
 {
     return \is_array($postData) ? (int) ($postData['zoneNumber'] ?? 1) : 1;
@@ -35,35 +33,39 @@ function getCommand(array $postData = null): ?Command
         VolumeUpCommand::class,
         VolumeDownCommand::class,
         MuteVolumeCommand::class,
+        SetVolumeCommand::class,
+        GetVolumeCommand::class,
     ];
 
     if ($commandName = getCommandName($postData)) {
         if (\in_array($commandName, $supportedCommands, true)) {
             return new $commandName();
         }
+    } else {
+        \error_log('Unable to determine command name from posted data: '.\print_r($postData, true));
     }
 
     return null;
 }
 
-if ($command = getCommand($_POST ?? null)) {
-    $response = $command->invoke(getZoneNumber($_POST ?? null));
+function getVolume(array $postData = null): float
+{
+    return \is_array($postData) ? (int) ($postData['volume'] ?? 10.0) : 10.0;
+}
 
+if ($command = getCommand($_POST ?? null)) {
+    //TODO: how to support multiple parameters?
+    if ($command instanceof SetVolumeCommand) {
+        $response = $command->invoke(getZoneNumber($_POST ?? null), getVolume($_POST ?? null));
+    } else {
+        $response = $command->invoke(getZoneNumber($_POST ?? null));
+    }
     echo $response->getJSON();
 
     return;
 }
 
 switch ($_POST['command']) {
-    case 'volumeStatus':
-    case GetVolumeCommand::ALIAS:
-        $command = new GetVolumeCommand();
-        $response = $command->invoke();
-        break;
-    case SetVolumeCommand::ALIAS:
-        $command = new SetVolumeCommand();
-        $response = $command->invoke(1, (float) $_POST['data']);
-        break;
     case 'functionStatus':
         $model = new FunctionCommand();
         $response = $model->functionStatus();
