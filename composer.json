@@ -2,6 +2,7 @@
   "name": "gordywills/receiver-control",
   "description": "a single page app to remotely control my Pioneer VSX-930 receiver via telnet",
   "type": "project",
+  "prefer-stable": true,
   "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
@@ -12,11 +13,21 @@
   ],
   "autoload": {
     "psr-4": {
-      "Commands\\": "Commands/"
+      "ReceiverControl\\": "src/"
     }
   },
   "require": {
-    "php": "^5.5 || ^7.0",
-    "graze/telnet-client": ">=2.0.0"
+    "php": "^7.1",
+    "beberlei/assert": "^2.7",
+    "graze/telnet-client": "^2.0.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "@stable",
+    "phpstan/phpstan": "@stable"
+  },
+  "scripts": {
+    "phpcs": "./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.php",
+    "phpcs-fix": "./vendor/bin/php-cs-fixer fix --verbose --config .php_cs.php",
+    "phpstan": "./vendor/bin/phpstan analyse -l 1 src"
   }
 }

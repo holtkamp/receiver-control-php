@@ -29,7 +29,7 @@ $ nano config.ini
 ````
 
 ````ini
-;config for the reciever in use
+;config for the receiver in use
 
 ;the ip address of your receiver, the default telnet port is 23
 dsn="ip_address:telnet_port"
@@ -42,3 +42,14 @@ lineEnding="\r\n"
 ````
 
 5\. Serve [index.php](index.php) from a webserver of your choice and navigate to it.
+
+*Use XML*
+The Telnet connections seem very instable. It might be better to use XML
+http://blue-pc.net/2013/12/28/denon-av-reciever-ueber-http-steuern/
+
+Volume
+http://denon/goform/formiPhoneAppDirect.xml?MVUP
+http://denon/goform/formiPhoneAppDirect.xml?MVDOWN
+
+http://denon/goform/formiPhoneAppDirect.xml?SITUNER
+http://denon/goform/formiPhoneAppDirect.xml?SINET //Source Input NET

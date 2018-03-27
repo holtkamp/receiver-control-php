@@ -5,13 +5,13 @@ var powerChange = function (result) {
     var volumeSlider = $('#volumeSlider');
     powerStatus.removeClass('powerBlack');
     if (result.valid) {
-        if (result.message === 'PWR0') {
+        if (result.message === 'PWON') {
             powerStatus.addClass('powerGreen').removeClass('powerRed powerYellow');
             switchable.prop('disabled', false);
             unSwitchable.prop('disabled', true);
             volumeSlider.slider("enable");
         }
-        if (result.message === 'PWR1') {
+        if (result.message === 'PWSTANDBY') {
             powerStatus.addClass('powerRed').removeClass('powerGreen powerYellow');
             switchable.prop('disabled', true);
             unSwitchable.prop('disabled', false);
@@ -27,7 +27,8 @@ var powerChange = function (result) {
 
 var volumeChange = function (result) {
     if (result.valid) {
-        var units = "dBi";
+        //var units = "dBi";
+        var units = "";
         if (result.message === 'Mute') {
             units = '';
             $("#custom-handle").text(result.message);
@@ -59,23 +60,26 @@ var makeFunctionButton = function (message) {
         button.setAttribute('disabled', 'disabled');
     }
     div.appendChild(button);
+
     return div;
 };
 
 var commandAjax = function (command, data, callback) {
+    console.log(commandAjax, data);
     if (typeof data === 'undefined') {
         data = '';
     }
     $.ajax({
         url: "/controller.php",
         method: 'POST',
-        async: false,
+        async: true,
         data: {
             command: command,
             data: data
         },
         dataType: "json",
         success: function (result) {
+            console.log("Success: ", command, result);
             callback(result);
         },
         error: function (xhr, status, thrown) {
@@ -85,20 +89,21 @@ var commandAjax = function (command, data, callback) {
         }
     });
 };
+
 var sliderSetup = function () {
     var handle = $("#custom-handle");
     var updateHandleText = function (ui) {
-        handle.text(ui.value + 'dBi');
+        handle.text(ui.value);
     };
     $('#volumeSlider').slider({
-        max: 12.0,
-        min: -80.0,
+        max: 50.0,
+        min: 0.0,
         orientation: "horizontal",
         step: 0.5,
-        value: -80.0,
-        disabled: true,
+        value: 30.0,
+        //disabled: true,
         create: function () {
-            handle.text($(this).slider("value") + 'dBi');
+            handle.text($(this).slider("value"));
         },
         change: function (event, ui) {
             updateHandleText(ui);
@@ -107,34 +112,36 @@ var sliderSetup = function () {
             updateHandleText(ui);
         },
         stop: function (event, ui) {
+            console.log(event, ui);
             commandAjax('volumeSet', ui.value, volumeChange)
         }
     });
 };
+
 $(document).ready(function () {
     sliderSetup();
-    commandAjax('powerStatus', '', powerChange);
-    commandAjax('volumeStatus', '', volumeChange);
-    commandAjax('functionStatus', '', functionChange);
+    //commandAjax('powerStatus', '', powerChange);
+    commandAjax('volumeStatus', '', volumeChange); //Fetch the "current" volume setting
+    //commandAjax('functionStatus', '', functionChange); //Not supported on a Denon?
 
-    $('#powerOn').click(function () {
-        commandAjax('powerOn', '', powerChange);
+    $('button.powerOn').click(function () {
+        commandAjax('powerOn', $(this).data(), powerChange);
     });
 
-    $('#powerOff').click(function () {
-        commandAjax('powerOff', '', powerChange);
+    $('button.powerOff').click(function () {
+        commandAjax('powerOff', $(this).data(), powerChange);
     });
 
-    $('#volumeUp').click(function () {
-        commandAjax('volumeUp', '', volumeChange);
+    $('button.volumeUp').click(function () {
+        commandAjax('volumeUp', $(this).data(), volumeChange);
     });
 
-    $('#volumeDown').click(function () {
-        commandAjax('volumeDown', '', volumeChange);
+    $('button.volumeDown').click(function () {
+        commandAjax('volumeDown', $(this).data(), volumeChange);
     });
 
-    $('#volumeMute').click(function () {
-        commandAjax('volumeMute', '', volumeChange);
+    $('button.volumeMute').click(function () {
+        commandAjax('volumeMute', $(this).data(), volumeChange);
     });
 
     $('#functionUp').click(function () {
