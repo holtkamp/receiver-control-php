@@ -13,13 +13,13 @@
 
         <div class="row">
             <div class="col">
-                <button class="powerOff switchable btn btn-danger"><span class="oi oi-power-standby"></span> Off</button>
+                <button class="switchable btn btn-danger" data-command="<?php echo \ReceiverControl\Command\Power\Off::class;?>"><span class="oi oi-power-standby"></span> Off</button>
             </div>
             <div class="col text-center ">
                 <h1>Main</h1>
             </div>
             <div class="col text-right">
-                <button class="powerOn unSwitchable btn btn-success"><span class="oi oi-power-standby"></span> On</button>
+                <button class="unSwitchable btn btn-success" data-command="<?php echo \ReceiverControl\Command\Power\On::class;?>"><span class="oi oi-power-standby"></span> On</button>
             </div>
         </div>
         <br/>
@@ -34,13 +34,13 @@
         <br/>
         <div class="row">
             <div class="col">
-                <button class="volumeDown switchable btn btn-lg"><span class="oi oi-volume-low"></span></button>
+                <button class="switchable btn btn-lg" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class;?>"><span class="oi oi-volume-low"></span></button>
             </div>
             <div class="col text-center">
-                <button class="volumeMute switchable btn btn-lg"><span class="oi oi-volume-off"></span></button>
+                <button class="switchable btn btn-lg" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class;?>"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="volumeUp switchable btn btn-lg"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class;?>"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>
@@ -48,13 +48,13 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col">
-                <button class="powerOff switchable btn btn-danger" data-zone-number="2"><span class="oi oi-power-standby"></span> Off</button>
+                <button class="switchable btn btn-danger" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Power\Off::class;?>"><span class="oi oi-power-standby"></span> Off</button>
             </div>
             <div class="col text-center">
                 <h1>2nd</h1>
             </div>
             <div class="col text-right">
-                <button class="powerOn unSwitchable btn btn-success" data-zone-number="2"><span class="oi oi-power-standby"></span> On</button>
+                <button class="unSwitchable btn btn-success" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Power\On::class;?>"><span class="oi oi-power-standby"></span> On</button>
             </div>
         </div>
 
@@ -70,13 +70,13 @@
 
         <div class="row">
             <div class="col">
-                <button class="volumeDown switchable btn btn-lg" data-zone-number="2"><span class="oi oi-volume-low"></span></button>
+                <button class="switchable btn btn-lg" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Down::class;?>"><span class="oi oi-volume-low"></span></button>
             </div>
             <div class="col text-center">
-                <button class="volumeMute switchable btn btn-lg" data-zone-number="2"><span class="oi oi-volume-off"></span></button>
+                <button class="switchable btn btn-lg" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Mute::class;?>"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="volumeUp switchable btn btn-lg" data-zone-number="2"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg" data-zone-number="2" data-command="<?php echo \ReceiverControl\Command\Volume\Up::class;?>"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>

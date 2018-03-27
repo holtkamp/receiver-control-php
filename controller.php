@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/vendor/autoload.php';
 
+use ReceiverControl\Command;
 use ReceiverControl\Command\FunctionCommand;
 use ReceiverControl\Command\Power\Off as PowerOffCommand;
 use ReceiverControl\Command\Power\On as PowerOnCommand;
@@ -18,37 +19,50 @@ $denonUrl = 'denon';
 
 function getZoneNumber(array $postData = null): int
 {
-    return is_array($postData) && $postData['zoneNumber'] ? (int)$postData['zoneNumber'] : 1;
+    return is_array($postData) ? (int)($postData['zoneNumber'] ?? 1) : 1;
 }
+
+function getCommandName(array $postData = null): ?string
+{
+    return is_array($postData) ? $postData['command'] ?? null : null;
+}
+
+function getCommand(array $postData = null): ?Command
+{
+    $supportedCommands = array(
+        PowerOnCommand::class,
+        PowerOffCommand::class,
+        VolumeUpCommand::class,
+        VolumeDownCommand::class,
+        MuteVolumeCommand::class,
+    );
+
+    if ($commandName = getCommandName($postData)) {
+        if (\in_array($commandName, $supportedCommands, true)) {
+            return new $commandName();
+        }
+    }
+
+    return null;
+}
+
+
+if ($command = getCommand($_POST ?? null)) {
+    $response = $command->invoke(getZoneNumber($_POST ?? null));
+
+    echo $response->getJSON();
+    return;
+}
+
 switch ($_POST['command']) {
-    case PowerOnCommand::ALIAS:
-        $command = new PowerOnCommand();
-        $response = $command->invoke(getZoneNumber($_POST['data'] ?? null));
-        break;
-    case PowerOffCommand::ALIAS:
-        $command = new PowerOffCommand();
-        $response = $command->invoke(getZoneNumber($_POST['data'] ?? null));
-        break;
     case 'powerStatus':
         $model = new PowerCommand();
         $response = $model->powerStatus();
-        break;
-    case VolumeUpCommand::ALIAS:
-        $command = new VolumeUpCommand();
-        $response = $command->invoke(getZoneNumber($_POST['data'] ?? null));
-        break;
-    case VolumeDownCommand::ALIAS:
-        $command = new VolumeDownCommand();
-        $response = $command->invoke(getZoneNumber($_POST['data'] ?? null));
         break;
     case 'volumeStatus':
     case GetVolumeCommand::ALIAS:
         $command = new GetVolumeCommand();
         $response = $command->invoke();
-        break;
-    case MuteVolumeCommand::ALIAS:
-        $command = new MuteVolumeCommand();
-        $response = $command->invoke(getZoneNumber($_POST['data'] ?? null));
         break;
     case SetVolumeCommand::ALIAS:
         $command = new SetVolumeCommand();
@@ -71,7 +85,7 @@ switch ($_POST['command']) {
         $response = $model->functionSet($_POST['data']);
         break;
     default:
-        $response = new Response(false, 'invalid command');
+        $response = new Response(false, 'invalid command', print_r($_POST, true));
         break;
 }
 

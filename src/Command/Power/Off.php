@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Power;
 
+use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
 
-class Off
+class Off implements Command
 {
-    public const ALIAS = 'powerOff';
-
     private const PARAMETER_POWER_OFF = 'PowerStandby';
 
     public function invoke(int $zoneNumber): Response

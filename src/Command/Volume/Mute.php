@@ -6,12 +6,11 @@ namespace ReceiverControl\Command\Volume;
 
 use DOMDocument;
 use DOMXPath;
+use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
-use ReceiverControl\Command\VolumeCommand;
 
-class Mute extends VolumeCommand
+class Mute implements Command
 {
-    public const ALIAS = 'volumeMute';
     private const PARAMETER_MUTE_ON = 'MuteOn';
 
     private $xPathQuery = '/item/Mute/value';

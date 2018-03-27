@@ -67,7 +67,7 @@ var makeFunctionButton = function (message) {
 var commandAjax = function (command, data, callback) {
     console.log(commandAjax, data);
     if (typeof data === 'undefined') {
-        data = '';
+        data = [];
     }
     $.ajax({
         url: "/controller.php",
@@ -89,6 +89,26 @@ var commandAjax = function (command, data, callback) {
         }
     });
 };
+
+var commandAjaxRaw = function (data, callback) {
+    $.ajax({
+        url: "/controller.php",
+        method: 'POST',
+        async: true,
+        data: data,
+        dataType: "json",
+        success: function (result) {
+            console.log("Success: ", result);
+            callback(result);
+        },
+        error: function (xhr, status, thrown) {
+            console.log(xhr);
+            console.log(status);
+            console.log(thrown);
+        }
+    });
+};
+
 
 var sliderSetup = function () {
     var handle = $("#custom-handle");
@@ -121,27 +141,12 @@ var sliderSetup = function () {
 $(document).ready(function () {
     sliderSetup();
     //commandAjax('powerStatus', '', powerChange);
-    commandAjax('volumeStatus', '', volumeChange); //Fetch the "current" volume setting
+    commandAjax('volumeStatus', [], volumeChange); //Fetch the "current" volume setting
     //commandAjax('functionStatus', '', functionChange); //Not supported on a Denon?
 
-    $('button.powerOn').click(function () {
-        commandAjax('powerOn', $(this).data(), powerChange);
-    });
-
-    $('button.powerOff').click(function () {
-        commandAjax('powerOff', $(this).data(), powerChange);
-    });
-
-    $('button.volumeUp').click(function () {
-        commandAjax('volumeUp', $(this).data(), volumeChange);
-    });
-
-    $('button.volumeDown').click(function () {
-        commandAjax('volumeDown', $(this).data(), volumeChange);
-    });
-
-    $('button.volumeMute').click(function () {
-        commandAjax('volumeMute', $(this).data(), volumeChange);
+    $('button[data-command]').click(function () {
+        console.log('Clicked button', $(this), 'with data', $(this).data());
+        commandAjaxRaw($(this).data(), powerChange);
     });
 
     $('#functionUp').click(function () {

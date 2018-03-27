@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Volume;
 
+use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
 use ReceiverControl\Command\Volume\Get as GetVolumeCommand;
-use ReceiverControl\Command\VolumeCommand;
 
-class Up extends VolumeCommand
+class Up implements Command
 {
-    public const ALIAS = 'volumeUp';
     private const MASTER_VOLUME_UP = 'MVUP';
     private const ZONE2_VOLUME_UP = 'Z2UP';
 
