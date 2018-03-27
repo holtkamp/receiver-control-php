@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Volume;
 
+use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
-use ReceiverControl\Command\VolumeCommand;
 
-class Set extends VolumeCommand
+class Set implements Command
 {
     public const ALIAS = 'volumeSet';
 
     private const MASTER_VOLUME_SET = 'MV';
+    private const ZONE2_VOLUME_SET = 'Z2';
 
-    public function invoke(float $volume): Response
+    public function invoke(int $zoneNumber, float $volume = null): Response
     {
-        return $this->invokeHttpGet($volume);
+        return $this->invokeHttpGet($zoneNumber, $volume);
     }
 
-    private function invokeHttpGet(float $volume): Response
+    private function invokeHttpGet(int $zoneNumber, float $volume): Response
     {
         $flattenedVolume = $this->flattenVolume($volume);
-        $url = \sprintf('http://%s/goform/formiPhoneAppDirect.xml?%s%s', 'denon', self::MASTER_VOLUME_SET, $flattenedVolume);
+        $url = \sprintf('http://%s/goform/formiPhoneAppDirect.xml?%s%s',
+            'denon',
+            $zoneNumber === 1 ? self::MASTER_VOLUME_SET : self::ZONE2_VOLUME_SET,
+            $flattenedVolume
+        );
 
         $data = \file_get_contents($url);
         if (\is_string($data)) {

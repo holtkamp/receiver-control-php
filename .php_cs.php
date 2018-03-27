@@ -26,6 +26,7 @@ $config->setRules([
 
 $finder = \PhpCsFixer\Finder::create();
 $finder->files();
+$finder->in('.');
 $finder->in('src');
 
 $config->setFinder($finder);

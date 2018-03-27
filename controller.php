@@ -1,13 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 use ReceiverControl\Command;
 use ReceiverControl\Command\FunctionCommand;
 use ReceiverControl\Command\Power\Off as PowerOffCommand;
 use ReceiverControl\Command\Power\On as PowerOnCommand;
-use ReceiverControl\Command\PowerCommand;
 use ReceiverControl\Command\Response;
 use ReceiverControl\Command\Volume\Down as VolumeDownCommand;
 use ReceiverControl\Command\Volume\Get as GetVolumeCommand;
@@ -19,23 +19,23 @@ $denonUrl = 'denon';
 
 function getZoneNumber(array $postData = null): int
 {
-    return is_array($postData) ? (int)($postData['zoneNumber'] ?? 1) : 1;
+    return \is_array($postData) ? (int) ($postData['zoneNumber'] ?? 1) : 1;
 }
 
 function getCommandName(array $postData = null): ?string
 {
-    return is_array($postData) ? $postData['command'] ?? null : null;
+    return \is_array($postData) ? $postData['command'] ?? null : null;
 }
 
 function getCommand(array $postData = null): ?Command
 {
-    $supportedCommands = array(
+    $supportedCommands = [
         PowerOnCommand::class,
         PowerOffCommand::class,
         VolumeUpCommand::class,
         VolumeDownCommand::class,
         MuteVolumeCommand::class,
-    );
+    ];
 
     if ($commandName = getCommandName($postData)) {
         if (\in_array($commandName, $supportedCommands, true)) {
@@ -46,19 +46,15 @@ function getCommand(array $postData = null): ?Command
     return null;
 }
 
-
 if ($command = getCommand($_POST ?? null)) {
     $response = $command->invoke(getZoneNumber($_POST ?? null));
 
     echo $response->getJSON();
+
     return;
 }
 
 switch ($_POST['command']) {
-    case 'powerStatus':
-        $model = new PowerCommand();
-        $response = $model->powerStatus();
-        break;
     case 'volumeStatus':
     case GetVolumeCommand::ALIAS:
         $command = new GetVolumeCommand();
@@ -66,7 +62,7 @@ switch ($_POST['command']) {
         break;
     case SetVolumeCommand::ALIAS:
         $command = new SetVolumeCommand();
-        $response = $command->invoke((float)$_POST['data']);
+        $response = $command->invoke(1, (float) $_POST['data']);
         break;
     case 'functionStatus':
         $model = new FunctionCommand();
@@ -85,11 +81,11 @@ switch ($_POST['command']) {
         $response = $model->functionSet($_POST['data']);
         break;
     default:
-        $response = new Response(false, 'invalid command', print_r($_POST, true));
+        $response = new Response(false, 'invalid command', \print_r($_POST, true));
         break;
 }
 
-/**
+/*
  * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXml.xml
  * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXmlStatus.xml
  * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXmlStatusLite.xml
