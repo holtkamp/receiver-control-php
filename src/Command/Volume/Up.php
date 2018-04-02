@@ -27,15 +27,21 @@ class Up implements Command
         $data = \file_get_contents($url);
         if (\is_string($data)) {
             if (\mb_strlen($data) === 0) {
+                \usleep($this->getMicroseconds(0.1)); //Introduce a minor delay, otherwise the set volume will not be returned by the Get command
                 $command = new GetVolumeCommand();
 
                 return $command->invoke($zoneNumber);
             }
 
-            return new Response(true, $data);
+            return new Response(true, $zoneNumber, $data);
         }
 
-        return new Response(true, 'Failed to invoke '.$url);
+        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
+    }
+
+    private function getMicroseconds(float $seconds): int
+    {
+        return (int) $seconds * 1000000;
     }
 
     /**

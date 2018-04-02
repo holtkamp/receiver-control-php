@@ -22,7 +22,9 @@ function getZoneNumber(array $postData = null): int
 
 function getCommandName(array $postData = null): ?string
 {
-    return \is_array($postData) ? $postData['command'] ?? null : null;
+    return \is_array($postData)
+        ? $postData['command'] ?? $postData['commandOnClick'] ?? $postData['commandOnChange'] ?? null
+        : null;
 }
 
 function getCommand(array $postData = null): ?Command
@@ -65,7 +67,7 @@ if ($command = getCommand($_POST ?? null)) {
     return;
 }
 
-switch ($_POST['command']) {
+switch ($_POST['commandOnClick']) {
     case 'functionStatus':
         $model = new FunctionCommand();
         $response = $model->functionStatus();
@@ -83,7 +85,7 @@ switch ($_POST['command']) {
         $response = $model->functionSet($_POST['data']);
         break;
     default:
-        $response = new Response(false, 'invalid command', \print_r($_POST, true));
+        $response = new Response(false, 1, 'invalid command', \print_r($_POST, true));
         break;
 }
 

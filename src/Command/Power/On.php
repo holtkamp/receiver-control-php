@@ -28,9 +28,9 @@ class On implements Command
         $url = \sprintf('http://%s/goform/formiPhoneAppPower.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_POWER_ON);
         $data = \file_get_contents($url);
         if (\is_string($data)) {
-            return new Response(true, $data, $url);
+            return new Response(true, $zoneNumber, $data, $url);
         }
 
-        return new Response(true, 'Failed to invoke '.$url);
+        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
     }
 }

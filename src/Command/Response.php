@@ -8,21 +8,23 @@ class Response
 {
     public $valid;
     public $message;
+
+    /**
+     * @var int
+     */
+    public $zoneNumber;
     private $debugMessage;
 
-    public function __construct(bool $valid, $message, $debugMessage = null)
+    public function __construct(bool $valid, int $zoneNumber, $message, $debugMessage = null)
     {
         $this->valid = $valid;
+        $this->zoneNumber = $zoneNumber;
         $this->message = $message;
         $this->debugMessage = $debugMessage;
     }
 
     public function getJSON(): string
     {
-        return \json_encode([
-            'valid' => $this->valid,
-            'message' => $this->message,
-            'debugMessage' => $this->debugMessage,
-        ]);
+        return \json_encode(\get_object_vars($this));
     }
 }

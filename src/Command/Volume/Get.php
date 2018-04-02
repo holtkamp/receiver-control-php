@@ -11,15 +11,16 @@ use ReceiverControl\Command\Response;
 
 class Get implements Command
 {
-    public const ALIAS = 'volumeGet';
-
     /**
      * @see https://denon.custhelp.com/app/answers/detail/a_id/136/~/relative-and-absolute-volume-ranges
      *
      * @var float
      */
-    private $referenceVolume = 80.5;
+    private $referenceVolume = 80;
 
+    /**
+     * @var string
+     */
     private $xPathQuery = '/item/MasterVolume/value';
 
     public function invoke(int $zoneNumber = 1): Response
@@ -35,12 +36,13 @@ class Get implements Command
 
         $dom = new DOMDocument();
         if ($dom->load($url)) {
+            \error_log($dom->saveXML());
             $volume = $this->getVolumeFromDOM($dom);
 
-            return new Response(true, $this->convertDecibelToRawVolume($volume));
+            return new Response(true, $zoneNumber, $this->convertDecibelToRawVolume($volume));
         }
 
-        return new Response(true, 'Failed to invoke '.$url);
+        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
     }
 
     private function getVolumeFromDOM(DOMDocument $dom): float

@@ -2,44 +2,38 @@ var powerChange = function (result) {
     var powerStatus = $('#powerStatus');
     var switchable = $('.switchable');
     var unSwitchable = $('.unSwitchable');
-    var volumeSlider = $('#volumeSlider');
     powerStatus.removeClass('powerBlack');
     if (result.valid) {
         if (result.message === 'PWON') {
             powerStatus.addClass('powerGreen').removeClass('powerRed powerYellow');
             switchable.prop('disabled', false);
             unSwitchable.prop('disabled', true);
-            volumeSlider.slider("enable");
         }
         if (result.message === 'PWSTANDBY') {
             powerStatus.addClass('powerRed').removeClass('powerGreen powerYellow');
             switchable.prop('disabled', true);
             unSwitchable.prop('disabled', false);
-            volumeSlider.slider("disable");
         }
     } else {
         powerStatus.addClass('powerYellow').removeClass('powerGreen powerRed');
         switchable.prop('disabled', true);
         unSwitchable.prop('disabled', true);
-        volumeSlider.slider("disable");
     }
 };
 
-var volumeChange = function (result) {
+let volumeChange = function (result) {
     if (result.valid) {
         //var units = "dBi";
-        var units = "";
-        if (result.message === 'Mute') {
-            units = '';
-            $("#custom-handle").text(result.message);
-        } else {
-            $('#volumeSlider').slider("value", result.message);
-        }
-        $('#volumeStatus').html(result.message + units);
+        let units = "";
+        let volumeLabelSelector = "#volumeLabelZoneNumber" + result.zoneNumber;
+        $(volumeLabelSelector).html(result.message + units);
+
+        let volumeSliderSelector = "#volumeSliderZoneNumber" + result.zoneNumber;
+        $(volumeSliderSelector).val(result.message);
     }
 };
 
-var functionChange = function (result) {
+let functionChange = function (result) {
     if (result.valid) {
         $('#functionStatus').html(result.message);
         if (!($("button[id='" + result.message.trim() + "']").length)) {
@@ -118,68 +112,26 @@ var commandAjaxRaw = function (data, callback) {
 };
 
 
-var sliderSetup = function () {
-    var handle = $("#custom-handle");
-    var updateHandleText = function (ui) {
-        handle.text(ui.value);
-    };
-    $('#volumeSlider').slider({
-        max: 50.0,
-        min: 0.0,
-        orientation: "horizontal",
-        step: 0.5,
-        value: 30.0,
-        //disabled: true,
-        create: function () {
-            handle.text($(this).slider("value"));
-        },
-        change: function (event, ui) {
-            updateHandleText(ui);
-        },
-        slide: function (event, ui) {
-            updateHandleText(ui);
-        },
-        stop: function (event, ui) {
-            console.log(event, ui);
-            data = {
-                command: 'ReceiverControl\\Command\\Volume\\Set',
-                zoneNumber: 1,
-                volume: ui.value,
-                callback: 'volumeChange'
-            };
-            commandAjaxRaw(data, volumeChange)
-        }
-    });
-};
-
-function updateSliderVolume(result) {
-    if (result.valid) {
-        //var units = "dBi";
-        var units = "";
-        if (result.message === 'Mute') {
-            units = '';
-            $("#custom-handle").text(result.message);
-        } else {
-            $('#volumeSlider').slider("value", result.message);
-        }
-        $('#volumeStatus').html(result.message + units);
-    }
-};
-
 $(document).ready(function () {
-    sliderSetup();
-    //commandAjax('powerStatus', '', powerChange);
     var data = {
         command: 'ReceiverControl\\Command\\Volume\\Get',
         zoneNumber: 1,
         callback: 'volumeChange'
     };
-    commandAjaxRaw(data, volumeChange); //Fetch the "current" volume setting
+    commandAjaxRaw(data, volumeChange); //Fetch the "current" volume setting for zone 1
     //commandAjax('functionStatus', '', functionChange); //Not supported on a Denon?
 
-    $('button[data-command]').click(function () {
+    $('button[data-command-on-click]').click(function () {
         console.log('Clicked button', $(this), 'with data', $(this).data());
-        commandAjaxRaw($(this).data(), eval($(this).data().callback));
+        let callbackFunction = eval($(this).data().callback);
+        commandAjaxRaw($(this).data(), callbackFunction);
+    });
+    $('input[data-command-on-change]').change(function () {
+        $(this).data('volume', parseFloat($(this).val()));
+        console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
+
+        let callbackFunction = eval($(this).data().callback);
+        commandAjaxRaw($(this).data(), callbackFunction);
     });
 
     $('#functionUp').click(function () {

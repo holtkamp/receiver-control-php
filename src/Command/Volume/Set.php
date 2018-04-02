@@ -32,13 +32,13 @@ class Set implements Command
         $data = \file_get_contents($url);
         if (\is_string($data)) {
             if (\mb_strlen($data) === 0) {
-                return new Response(true, $volume); //We 'assume' the volume has been set, we could consider requesting the status, but this would involve another HTTP request
+                return new Response(true, $zoneNumber, $volume); //We 'assume' the volume has been set, we could consider requesting the status, but this would involve another HTTP request
             }
 
-            return new Response(true, $data);
+            return new Response(true, $zoneNumber, $data);
         }
 
-        return new Response(true, 'Failed to invoke '.$url);
+        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
     }
 
     /**

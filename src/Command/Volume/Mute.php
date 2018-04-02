@@ -28,10 +28,10 @@ class Mute implements Command
         if ($dom->load($url)) {
             $muteStatus = $this->getMuteStatusFromDom($dom);
 
-            return new Response(true, $this->isMuted($muteStatus) ? 0 : null);
+            return new Response(true, $zoneNumber, $this->isMuted($muteStatus) ? 0 : null);
         }
 
-        return new Response(true, 'Failed to invoke '.$url);
+        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
     }
 
     private function isMuted(string $muteState): bool

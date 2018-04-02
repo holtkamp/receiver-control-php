@@ -18,7 +18,7 @@ class FunctionCommand extends Command
     {
         $number = $this->currentFunctionNumber();
 
-        return new Response(true, $number.' - '.$this->translateFunctionNumber($number));
+        return new Response(true, 1, $number.' - '.$this->translateFunctionNumber($number));
     }
 
     public function functionDown(): Response
