@@ -5,7 +5,6 @@ declare(strict_types=1);
 require __DIR__.'/vendor/autoload.php';
 
 use ReceiverControl\Command;
-use ReceiverControl\Command\FunctionCommand;
 use ReceiverControl\Command\Power\Off as PowerOffCommand;
 use ReceiverControl\Command\Power\On as PowerOnCommand;
 use ReceiverControl\Command\Response;
@@ -67,40 +66,6 @@ if ($command = getCommand($_POST ?? null)) {
     return;
 }
 
-switch ($_POST['commandOnClick']) {
-    case 'functionStatus':
-        $model = new FunctionCommand();
-        $response = $model->functionStatus();
-        break;
-    case 'functionUp':
-        $model = new FunctionCommand();
-        $response = $model->functionUp();
-        break;
-    case 'functionDown':
-        $model = new FunctionCommand();
-        $response = $model->functionDown();
-        break;
-    case 'functionSet':
-        $model = new FunctionCommand();
-        $response = $model->functionSet($_POST['data']);
-        break;
-    default:
-        $response = new Response(false, 1, 'invalid command', \print_r($_POST, true));
-        break;
-}
-
-/*
- * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXml.xml
- * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXmlStatus.xml
- * http://<AV IP-Adresse>/goform/formMainZone_MainZoneXmlStatusLite.xml
- * http://<AV IP-Adresse>/NetAudio/art.asp-jpg
- * http://<AV IP-Adresse>/img/album%20art_S.png
- *
- * http://denon/goform/formMainZone_MainZoneXml.xml
- * http://denon/goform/formMainZone_MainZoneXmlStatus.xml
- * http://denon/goform/formMainZone_MainZoneXmlStatusLite.xml
- * http://denon/NetAudio/art.asp-jpg
- * http://denon/img/album%20art_S.png
- */
+$response = new Response(false, 1, 'invalid command', \print_r($_POST, true));
 
 echo $response->getJSON();

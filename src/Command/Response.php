@@ -13,7 +13,8 @@ class Response
      * @var int
      */
     public $zoneNumber;
-    private $debugMessage;
+
+    public $debugMessage;
 
     public function __construct(bool $valid, int $zoneNumber, $message, $debugMessage = null)
     {

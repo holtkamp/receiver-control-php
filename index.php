@@ -34,13 +34,13 @@
         <br/>
         <div class="row">
             <div class="col">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-low"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-low"></span></button>
             </div>
             <div class="col text-center">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-off"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>
@@ -71,13 +71,13 @@
 
         <div class="row">
             <div class="col">
-                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-low"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Down::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-low"></span></button>
             </div>
             <div class="col text-center">
-                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-off"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Mute::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-off"></span></button>
             </div>
             <div class="col text-right">
-                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>" data-callback="volumeChange"><span class="oi oi-volume-high"></span></button>
+                <button class="switchable btn btn-lg btn-outline-dark" data-zone-number="2" data-command-on-click="<?php echo \ReceiverControl\Command\Volume\Up::class; ?>" data-callback="volumeChangedHandler"><span class="oi oi-volume-high"></span></button>
             </div>
         </div>
     </div>

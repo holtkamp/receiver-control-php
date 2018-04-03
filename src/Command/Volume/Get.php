@@ -36,7 +36,6 @@ class Get implements Command
 
         $dom = new DOMDocument();
         if ($dom->load($url)) {
-            \error_log($dom->saveXML());
             $volume = $this->getVolumeFromDOM($dom);
 
             return new Response(true, $zoneNumber, $this->convertDecibelToRawVolume($volume));
