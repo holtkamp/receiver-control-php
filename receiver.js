@@ -42,6 +42,7 @@ $(document).ready(function () {
     initializeVolumeSliders();
     initializeButtonEventHandling();
     initializeSliderEventHandling();
+    initializeSelectEventHandling();
 });
 
 function initializeButtonEventHandling() {
@@ -55,6 +56,16 @@ function initializeButtonEventHandling() {
 function initializeSliderEventHandling() {
     $('input[data-command-on-change]').change(function () {
         $(this).data('volume', parseFloat($(this).val()));
+        console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
+
+        let callbackFunction = eval($(this).data().callback);
+        asynchronousRequest($(this).data(), callbackFunction);
+    });
+}
+
+function initializeSelectEventHandling() {
+    $('input[data-command-on-select]').click(function () {
+        $(this).data('option', parseFloat($(this).val()));
         console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
 
         let callbackFunction = eval($(this).data().callback);

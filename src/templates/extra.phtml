@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+use ReceiverControl\Command\Device\Info;
+use ReceiverControl\Command\SetAllZoneStereo;
+
+?>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col">
+            <button class="switchable btn btn-default" data-command-on-click="<?php echo SetAllZoneStereo::class; ?>">
+                <span class="oi oi-musical-note"></span> AllZoneStereo
+            </button>
+            <button class="switchable btn btn-default" data-command-on-click="<?php echo Info::class; ?>">
+                <span class="oi oi-info"></span> Info
+            </button>
+        </div>
+        <div class="col text-right">
+
+        </div>
+    </div>
+</div>

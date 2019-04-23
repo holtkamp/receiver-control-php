@@ -8,5 +8,5 @@ use ReceiverControl\Command\Response;
 
 interface Command
 {
-    public function invoke(int $zoneNumber): Response;
+    public function invoke(int $zoneNumber) : Response;
 }

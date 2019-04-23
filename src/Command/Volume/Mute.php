@@ -8,42 +8,46 @@ use DOMDocument;
 use DOMXPath;
 use ReceiverControl\Command;
 use ReceiverControl\Command\Response;
+use RuntimeException;
+use function sprintf;
 
 class Mute implements Command
 {
     private const PARAMETER_MUTE_ON = 'MuteOn';
 
+    /** @var string */
     private $xPathQuery = '/item/Mute/value';
 
-    public function invoke(int $zoneNumber): Response
+    public function invoke(int $zoneNumber) : Response
     {
         return $this->invokeWithDomDocument($zoneNumber);
     }
 
-    private function invokeWithDomDocument(int $zoneNumber): Response
+    private function invokeWithDomDocument(int $zoneNumber) : Response
     {
-        $url = \sprintf('http://%s/goform/formiPhoneAppMute.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_MUTE_ON);
+        $url = sprintf('http://%s/goform/formiPhoneAppMute.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_MUTE_ON);
 
-        $dom = new DOMDocument();
-        if ($dom->load($url)) {
-            $muteStatus = $this->getMuteStatusFromDom($dom);
+        $dom    = new DOMDocument();
+        $result = $dom->load($url);
 
-            return new Response(true, $zoneNumber, $this->isMuted($muteStatus) ? 0 : null);
-        }
-
-        return new Response(true, $zoneNumber, 'Failed to invoke '.$url);
+        return $result === true
+            ? new Response(true, $zoneNumber, $this->isMuted($this->getMuteStatusFromDom($dom)) ? 0 : null)
+            : new Response(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 
-    private function isMuted(string $muteState): bool
+    private function isMuted(string $muteState) : bool
     {
         return $muteState === 'on';
     }
 
-    private function getMuteStatusFromDom(DOMDocument $dom): string
+    private function getMuteStatusFromDom(DOMDocument $dom) : string
     {
         $xpath = new DOMXPath($dom);
-        $node = $xpath->query($this->xPathQuery)->item(0);
+        $node  = $xpath->query($this->xPathQuery)->item(0);
 
-        return (string) $node->nodeValue;
+        if ($node === null) {
+            throw new RuntimeException('No node found');
+        }
+        return $node->nodeValue;
     }
 }

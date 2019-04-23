@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+use ReceiverControl\Command\Source\Inputs;
+use ReceiverControl\Command\Source\Select;
+
+?>
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col">
+            <button class="switchable btn btn-default" data-command-on-click="<?php echo Select::class; ?>"
+                    data-source-input="<?php echo Inputs::TUNER;?>">Tuner
+            </button>
+            <button class="switchable btn btn-default" data-command-on-click="<?php echo Select::class; ?>"
+                    data-source-input="<?php echo Inputs::BLU_RAY;?>">Blu-Ray
+            </button>
+        </div>
+        <div class="col text-right">
+
+        </div>
+    </div>
+</div>

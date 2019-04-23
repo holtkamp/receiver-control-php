@@ -18,15 +18,19 @@
   },
   "require": {
     "php": "^7.1",
+    "ext-dom": "*",
     "beberlei/assert": "^2.9"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "@stable",
-    "phpstan/phpstan": "@stable"
+    "phpstan/phpstan": "@stable",
+    "phpstan/phpstan-deprecation-rules": "@stable",
+    "phpstan/phpstan-strict-rules": "@stable",
+    "roave/security-advisories": "dev-master",
+    "slevomat/coding-standard": "@stable"
   },
   "scripts": {
-    "phpcs": "./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.php",
-    "phpcs-fix": "./vendor/bin/php-cs-fixer fix --verbose --config .php_cs.php",
-    "phpstan": "./vendor/bin/phpstan analyse -l 1 src"
+    "phpcs": "./vendor/bin/phpcs --cache=./.phpcs.cache.php --standard=phpcs.xml -sp",
+    "phpcbf": "./vendor/bin/phpcbf --standard=phpcs.xml -p",
+    "phpstan": "./vendor/bin/phpstan analyse --level 7 -c phpstan.neon src"
   }
 }

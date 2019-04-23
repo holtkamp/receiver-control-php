@@ -4,28 +4,39 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command;
 
+use function get_object_vars;
+use function is_string;
+use function json_encode;
+
 class Response
 {
+    /** @var bool */
     public $valid;
+
+    /** @var mixed */
     public $message;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $zoneNumber;
 
+    /** @var ?string */
     public $debugMessage;
 
-    public function __construct(bool $valid, int $zoneNumber, $message, $debugMessage = null)
+    /**
+     * @param mixed $message
+     */
+    public function __construct(bool $valid, int $zoneNumber, $message, string $debugMessage = null)
     {
-        $this->valid = $valid;
-        $this->zoneNumber = $zoneNumber;
-        $this->message = $message;
+        $this->valid        = $valid;
+        $this->zoneNumber   = $zoneNumber;
+        $this->message      = $message;
         $this->debugMessage = $debugMessage;
     }
 
-    public function getJSON(): string
+    public function getJSON() : string
     {
-        return \json_encode(\get_object_vars($this));
+        $result = json_encode(get_object_vars($this));
+
+        return is_string($result) ? $result : '';
     }
 }
