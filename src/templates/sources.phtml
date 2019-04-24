@@ -6,16 +6,20 @@ use ReceiverControl\Command\Source\Inputs;
 use ReceiverControl\Command\Source\Select;
 
 ?>
-
 <div class="jumbotron">
     <div class="row">
         <div class="col">
-            <button class="switchable btn btn-default" data-command-on-click="<?php echo Select::class; ?>"
-                    data-source-input="<?php echo Inputs::TUNER;?>">Tuner
-            </button>
-            <button class="switchable btn btn-default" data-command-on-click="<?php echo Select::class; ?>"
-                    data-source-input="<?php echo Inputs::BLU_RAY;?>">Blu-Ray
-            </button>
+            <div class="btn-group">
+                <?php
+                foreach (Inputs::getSourceInputs() as $sourceInputKey => $sourceInputValue) {
+                    echo sprintf('<button class="switchable btn btn-outline-secondary" data-command-on-click="%s" data-source-input="%s">%s</button>',
+                        Select::class,
+                        $sourceInputKey,
+                        $sourceInputValue
+                    );
+                }
+                ?>
+            </div>
         </div>
         <div class="col text-right">
 

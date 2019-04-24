@@ -5,17 +5,25 @@ declare(strict_types=1);
 use ReceiverControl\Command\Device\Info;
 use ReceiverControl\Command\SetAllZoneStereo;
 
+$commands = [
+    SetAllZoneStereo::class => 'AllZoneStereo',
+    Info::class => 'Info',
+];
 ?>
 
 <div class="jumbotron">
     <div class="row">
         <div class="col">
-            <button class="switchable btn btn-default" data-command-on-click="<?php echo SetAllZoneStereo::class; ?>">
-                <span class="oi oi-musical-note"></span> AllZoneStereo
-            </button>
-            <button class="switchable btn btn-default" data-command-on-click="<?php echo Info::class; ?>">
-                <span class="oi oi-info"></span> Info
-            </button>
+            <div class="btn-group">
+                <?php
+                foreach ($commands as $command => $label) {
+                    echo sprintf('<button class="switchable btn btn-outline-secondary" data-command-on-click="%s">%s</button>',
+                        $command,
+                        $label
+                    );
+                }
+                ?>
+            </div>
         </div>
         <div class="col text-right">
 
