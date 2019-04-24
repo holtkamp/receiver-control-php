@@ -83,17 +83,25 @@ class Application
             return $command->invoke($this->getZoneNumber($_POST), $this->getSourceInput($_POST));
         }
 
-        return $command->invoke($this->getZoneNumber($_POST ?? null));
+        return $command->invoke($this->getZoneNumber($_POST));
     }
 
-    private function getZoneNumber(array $postData = null) : int
+    private function getZoneNumber(array $postData) : int
     {
-        return is_array($postData) ? (int) ($postData['zoneNumber'] ?? 1) : 1;
+        if (\array_key_exists('zoneNumber', $postData)) {
+            return (int) $postData['zoneNumber'];
+        }
+
+        return 1;
     }
 
     private function getVolume(array $postData) : float
     {
-        return $postData['volume'] ?? 10.0;
+        if (\array_key_exists('volume', $postData)) {
+            return (float) $postData['volume'];
+        }
+
+        return 10.0;
     }
 
     private function getSourceInput(array $postData = null) : string
