@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace ReceiverControl;
 
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use ReceiverControl\Command\Device\Info as DeviceInfoCommand;
 use ReceiverControl\Command\Power\Off as PowerOffCommand;
 use ReceiverControl\Command\Power\On as PowerOnCommand;
@@ -15,12 +18,12 @@ use ReceiverControl\Command\Volume\Get as GetVolumeCommand;
 use ReceiverControl\Command\Volume\Mute as MuteVolumeCommand;
 use ReceiverControl\Command\Volume\Set as SetVolumeCommand;
 use ReceiverControl\Command\Volume\Up as VolumeUpCommand;
+use function array_key_exists;
 use function error_log;
 use function in_array;
-use function is_array;
 use function print_r;
 
-class Application
+class CommandController
 {
     /** @var array */
     private $supportedCommands = [
@@ -36,20 +39,32 @@ class Application
         SelectSourceCommand::class,
     ];
 
-    public function run() : void
-    {
-        $command = $this->getCommand($_POST ?? null);
-        if ($command === null) {
-            $response = new Response(false, 1, 'invalid command', print_r($_POST, true));
+    /** @var ContainerInterface */
+    private $container;
 
-            echo $response->getJSON();
-            return;
-        }
-        $response = $this->executeCommand($command);
-        echo $response->getJSON();
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
 
-    private function getCommand(array $postData = null) : ?Command
+    public function __invoke(RequestInterface $request, ResponseInterface $response) : ResponseInterface
+    {
+        $postData            = $_POST ?? [];
+        $applicationResponse = $this->invokeCommand($this->getCommand($postData), $postData);
+
+        $response->getBody()->write($applicationResponse->getJSON());
+
+        return $response;
+    }
+
+    private function invokeCommand(?Command $command, array $postData) : Response
+    {
+        return $command === null
+            ? new Response(false, 1, 'invalid command', print_r($postData, true))
+            : $this->executeCommand($command, $postData);
+    }
+
+    private function getCommand(array $postData) : ?Command
     {
         $commandName = $this->getCommandName($postData);
 
@@ -66,21 +81,22 @@ class Application
         return null;
     }
 
-    private function getCommandName(array $postData = null) : ?string
+    private function getCommandName(array $postData) : ?string
     {
-        return is_array($postData)
-            ? $postData['command'] ?? $postData['commandOnClick'] ?? $postData['commandOnChange'] ?? null
-            : null;
+        return $postData['command']
+            ?? $postData['commandOnClick']
+            ?? $postData['commandOnChange']
+            ?? null;
     }
 
-    private function executeCommand(Command $command) : Response
+    private function executeCommand(Command $command, array $postData) : Response
     {
         //TODO: how to support multiple parameters?
         if ($command instanceof SetVolumeCommand) {
-            return $command->invoke($this->getZoneNumber($_POST ?? null), $this->getVolume($_POST ?? null));
+            return $command->invoke($this->getZoneNumber($postData), $this->getVolume($postData));
         }
         if ($command instanceof SelectSourceCommand) {
-            return $command->invoke($this->getZoneNumber($_POST), $this->getSourceInput($_POST));
+            return $command->invoke($this->getZoneNumber($postData), $this->getSourceInput($postData));
         }
 
         return $command->invoke($this->getZoneNumber($_POST));
@@ -88,7 +104,7 @@ class Application
 
     private function getZoneNumber(array $postData) : int
     {
-        if (\array_key_exists('zoneNumber', $postData)) {
+        if (array_key_exists('zoneNumber', $postData)) {
             return (int) $postData['zoneNumber'];
         }
 
@@ -97,14 +113,14 @@ class Application
 
     private function getVolume(array $postData) : float
     {
-        if (\array_key_exists('volume', $postData)) {
+        if (array_key_exists('volume', $postData)) {
             return (float) $postData['volume'];
         }
 
         return 10.0;
     }
 
-    private function getSourceInput(array $postData = null) : string
+    private function getSourceInput(array $postData) : string
     {
         return $postData['sourceInput'];
     }

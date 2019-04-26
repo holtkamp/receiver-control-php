@@ -17,9 +17,11 @@
     }
   },
   "require": {
-    "php": "^7.1",
+    "php": "^7.3",
     "ext-dom": "*",
-    "beberlei/assert": "^2.9"
+    "beberlei/assert": "^2.9",
+    "slim/slim": "4.0.0-alpha",
+    "slim/psr7": "dev-master"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",

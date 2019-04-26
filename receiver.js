@@ -12,8 +12,8 @@ let volumeChangedHandler = function (result) {
 
 let asynchronousRequest = function (data, callback) {
     $.ajax({
-        url: "/controller.php",
-        method: 'POST',
+        url: "/",
+        method: "POST",
         async: true,
         data: data,
         dataType: "json",
