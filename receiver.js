@@ -17,6 +17,7 @@ let asynchronousRequest = function (data, callback) {
         method: "POST",
         async: true,
         //Required because the default "application/x-www-form-urlencoded; charset=UTF-8" is not detected by Slim ServerRequestFactory
+        //@link https://github.com/slimphp/Slim-Psr7/issues/38
         contentType: "application/x-www-form-urlencoded",
         data: data,
         dataType: "json",

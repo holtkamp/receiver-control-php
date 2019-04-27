@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\ZoneNumberAware;
+use ReceiverControl\Psr7\JsonAwareResponse;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
@@ -15,6 +16,7 @@ use function str_replace;
 
 final class Set
 {
+    use JsonAwareResponse;
     use ZoneNumberAware;
 
     private const MASTER_VOLUME_SET = 'MV';
@@ -22,15 +24,15 @@ final class Set
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
-        $zoneNumber = $this->getZoneNumber($request);
-        $volume     = $this->getVolume($request);
+        $zoneNumber = $this->getIndicatedZoneNumber($request);
+        $volume     = $this->getIndicatedVolume($request);
 
-        $response->getBody()->write($this->invoke($zoneNumber, $volume)->getJSON());
+        $response->getBody()->write($this->getResponseBody($zoneNumber, $volume)->getJSON());
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $this->withJsonHeader($response);
     }
 
-    private function getVolume(ServerRequestInterface $request) : float
+    private function getIndicatedVolume(ServerRequestInterface $request) : float
     {
         $parameters = $request->getParsedBody();
         if (is_array($parameters) && array_key_exists('volume', $parameters)) {
@@ -40,12 +42,7 @@ final class Set
         return 10.0;
     }
 
-    private function invoke(int $zoneNumber, float $volume) : ResponseBody
-    {
-        return $this->invokeHttpGet($zoneNumber, $volume);
-    }
-
-    private function invokeHttpGet(int $zoneNumber, float $volume) : ResponseBody
+    private function getResponseBody(int $zoneNumber, float $volume) : ResponseBody
     {
         $flattenedVolume = $this->flattenVolume($volume);
         $url             = sprintf(

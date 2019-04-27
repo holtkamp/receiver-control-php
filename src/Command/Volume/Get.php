@@ -10,11 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\ZoneNumberAware;
+use ReceiverControl\Psr7\JsonAwareResponse;
 use RuntimeException;
 use function sprintf;
 
 final class Get
 {
+    use JsonAwareResponse;
     use ZoneNumberAware;
 
     /**
@@ -29,18 +31,13 @@ final class Get
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
-        $zoneNumber = $this->getZoneNumber($request);
-        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+        $zoneNumber = $this->getIndicatedZoneNumber($request);
+        $response->getBody()->write($this->getResponseBody($zoneNumber)->getJSON());
 
-        return $response->withHeader('Content-Type', 'application/json');
+         return $this->withJsonHeader($response);
     }
 
-    public function invoke(int $zoneNumber) : ResponseBody
-    {
-        return $this->invokeWithDomDocument($zoneNumber);
-    }
-
-    private function invokeWithDomDocument(int $zoneNumber) : ResponseBody
+    public function getResponseBody(int $zoneNumber) : ResponseBody
     {
         $url = sprintf(
             'http://%s/goform/form%sXmlStatusLite.xml',

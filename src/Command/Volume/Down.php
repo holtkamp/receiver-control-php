@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\Volume\Get as GetVolumeCommand;
 use ReceiverControl\Command\ZoneNumberAware;
+use ReceiverControl\Psr7\JsonAwareResponse;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
@@ -16,6 +17,7 @@ use function usleep;
 
 final class Down
 {
+    use JsonAwareResponse;
     use ZoneNumberAware;
 
     private const MASTER_VOLUME_DOWN = 'MVDOWN';
@@ -23,18 +25,13 @@ final class Down
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
-        $zoneNumber = $this->getZoneNumber($request);
-        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+        $zoneNumber = $this->getIndicatedZoneNumber($request);
+        $response->getBody()->write($this->getResponseBody($zoneNumber)->getJSON());
 
-        return $response->withHeader('Content-Type', 'application/json');
+         return $this->withJsonHeader($response);
     }
 
-    private function invoke(int $zoneNumber) : ResponseBody
-    {
-        return $this->invokeHttpGet($zoneNumber);
-    }
-
-    private function invokeHttpGet(int $zoneNumber) : ResponseBody
+    private function getResponseBody(int $zoneNumber) : ResponseBody
     {
         $url  = sprintf(
             'http://%s/goform/formiPhoneAppDirect.xml?%s',
@@ -48,7 +45,7 @@ final class Down
 
                 $command = new GetVolumeCommand();
 
-                return $command->invoke($zoneNumber);
+                return $command->getResponseBody($zoneNumber);
             }
 
             return new ResponseBody(true, $zoneNumber, $data);

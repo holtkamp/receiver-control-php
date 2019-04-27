@@ -10,11 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\ZoneNumberAware;
+use ReceiverControl\Psr7\JsonAwareResponse;
 use RuntimeException;
 use function sprintf;
 
 final class Mute
 {
+    use JsonAwareResponse;
     use ZoneNumberAware;
 
     private const PARAMETER_MUTE_ON = 'MuteOn';
@@ -24,18 +26,13 @@ final class Mute
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
-        $zoneNumber = $this->getZoneNumber($request);
-        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+        $zoneNumber = $this->getIndicatedZoneNumber($request);
+        $response->getBody()->write($this->getResponseBody($zoneNumber)->getJSON());
 
-        return $response->withHeader('Content-Type', 'application/json');
+        return $this->withJsonHeader($response);
     }
 
-    private function invoke(int $zoneNumber) : ResponseBody
-    {
-        return $this->invokeWithDomDocument($zoneNumber);
-    }
-
-    private function invokeWithDomDocument(int $zoneNumber) : ResponseBody
+    private function getResponseBody(int $zoneNumber) : ResponseBody
     {
         $url = sprintf('http://%s/goform/formiPhoneAppMute.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_MUTE_ON);
 
@@ -60,6 +57,7 @@ final class Mute
         if ($node === null) {
             throw new RuntimeException('No node found');
         }
+
         return $node->nodeValue;
     }
 }

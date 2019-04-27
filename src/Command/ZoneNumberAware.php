@@ -9,7 +9,7 @@ use function array_key_exists;
 
 trait ZoneNumberAware
 {
-    private function getZoneNumber(ServerRequestInterface $request) : int
+    private function getIndicatedZoneNumber(ServerRequestInterface $request) : int
     {
         $parameters = $request->getParsedBody();
         if (is_array($parameters) && array_key_exists('zoneNumber', $parameters)) {
