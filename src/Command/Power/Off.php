@@ -25,7 +25,7 @@ final class Off
         $zoneNumber = $this->getIndicatedZoneNumber($request);
         $response->getBody()->write($this->getResponseBody($zoneNumber)->getJSON());
 
-         return $this->withJsonHeader($response);
+        return $this->withJsonHeader($response);
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ReceiverControl;
 
 use Psr\Container\ContainerInterface;
+use function array_key_exists;
 use function class_exists;
 
 class Container implements ContainerInterface
@@ -39,6 +40,6 @@ class Container implements ContainerInterface
 
     public function has($id) : bool
     {
-        return \array_key_exists($id, $this->resources) || class_exists($id);
+        return array_key_exists($id, $this->resources) || class_exists($id);
     }
 }

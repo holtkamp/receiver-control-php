@@ -23,7 +23,7 @@ final class SetAllZoneStereo
         $zoneNumber = $this->getIndicatedZoneNumber($request);
         $response->getBody()->write($this->getResponseBody($zoneNumber)->getJSON());
 
-         return $this->withJsonHeader($response);
+        return $this->withJsonHeader($response);
     }
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
