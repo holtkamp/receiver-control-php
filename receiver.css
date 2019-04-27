@@ -1,36 +1,5 @@
-.powerRed {
-    background-color: red;
-}
-
-.powerGreen {
-    background-color: green;
-}
-
-.powerYellow {
-    background-color: yellow;
-}
-
-.powerBlack {
-    background-color: black;
-}
-
-#powerStatus, #volumeStatus {
-    width: 100px;
-    height: 20px;
-}
-
-#functionStatus {
-    width: 300px;
-    height: 20px;
-}
-
-#custom-handle {
-    width: 5em;
-    height: 1.6em;
-    top: 50%;
-    margin-top: -.8em;
-    text-align: center;
-    line-height: 1.6em;
+body{
+    margin-top: 5px;
 }
 
 input[type=range]{

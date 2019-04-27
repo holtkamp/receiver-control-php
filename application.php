@@ -5,14 +5,17 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use ReceiverControl\Container;
 use Slim\Factory\AppFactory;
+use Slim\Views\PhpRenderer;
 
-AppFactory::setContainer(new Container());
+$container = new Container();
+$renderer = new PhpRenderer(__DIR__ . '/src/templates');
+$renderer->setLayout('layout.phtml');
+$container->set('renderer', $renderer);
+
+AppFactory::setContainer($container);
 $application = AppFactory::create();
 $application->get('/', function (Request $request, Response $response, $args): Response {
-    $content = require __DIR__ . '/index.phtml';
-    $response->getBody()->write($content);
-
-    return $response;
+    return $this->renderer->render($response, 'index.phtml', ['title' => 'Denon Controller']);
 });
 
 $postCommands = [
