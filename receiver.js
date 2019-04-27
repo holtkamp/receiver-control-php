@@ -11,8 +11,9 @@ let volumeChangedHandler = function (result) {
 };
 
 let asynchronousRequest = function (data, callback) {
+    console.log("Invoking with data", data);
     $.ajax({
-        url: "/",
+        url: "/" + data.command ? data.command : '',
         method: "POST",
         async: true,
         data: data,
@@ -40,37 +41,22 @@ let asynchronousRequest = function (data, callback) {
 
 $(document).ready(function () {
     initializeVolumeSliders();
-    initializeButtonEventHandling();
-    initializeSliderEventHandling();
-    initializeSelectEventHandling();
+    initializeCommandHandling();
 });
 
-function initializeButtonEventHandling() {
-    $('button[data-command-on-click]').click(function () {
-        console.log('Clicked button', $(this), 'with data', $(this).data());
-        let callbackFunction = eval($(this).data().callback);
-        asynchronousRequest($(this).data(), callbackFunction);
-    });
-}
-
-function initializeSliderEventHandling() {
-    $('input[data-command-on-change]').change(function () {
-        $(this).data('volume', parseFloat($(this).val()));
-        console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
-
-        let callbackFunction = eval($(this).data().callback);
-        asynchronousRequest($(this).data(), callbackFunction);
-    });
-}
-
-function initializeSelectEventHandling() {
-    $('input[data-command-on-select]').click(function () {
-        $(this).data('option', parseFloat($(this).val()));
-        console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
-
-        let callbackFunction = eval($(this).data().callback);
-        asynchronousRequest($(this).data(), callbackFunction);
-    });
+function initializeCommandHandling() {
+    $('[data-command]')
+        .click(function () {
+            console.log('Clicked button', $(this), 'with data', $(this).data());
+            let callbackFunction = eval($(this).data().callback);
+            asynchronousRequest($(this).data(), callbackFunction);
+        })
+        .change(function () {
+            console.log('Changed input', $(this), 'with value', $(this).val(), 'data', $(this).data());
+            $(this).data('volume', parseFloat($(this).val()));
+            let callbackFunction = eval($(this).data().callback);
+            asynchronousRequest($(this).data(), callbackFunction);
+        });
 }
 
 function initializeVolumeSliders() {
@@ -86,5 +72,4 @@ function initializeVolumeSlider(zoneNumber) {
         },
         volumeChangedHandler
     );
-
 }

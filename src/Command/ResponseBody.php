@@ -8,7 +8,7 @@ use function get_object_vars;
 use function is_string;
 use function json_encode;
 
-class Response
+class ResponseBody
 {
     /** @var bool */
     public $valid;
@@ -38,5 +38,10 @@ class Response
         $result = json_encode(get_object_vars($this));
 
         return is_string($result) ? $result : '';
+    }
+
+    public function toArray() : array
+    {
+        return get_object_vars($this);
     }
 }

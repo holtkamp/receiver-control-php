@@ -4,25 +4,37 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Volume;
 
-use ReceiverControl\Command;
-use ReceiverControl\Command\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\Volume\Get as GetVolumeCommand;
+use ReceiverControl\Command\ZoneNumberAware;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
 use function usleep;
 
-class Down implements Command
+final class Down
 {
+    use ZoneNumberAware;
+
     private const MASTER_VOLUME_DOWN = 'MVDOWN';
     private const ZONE2_VOLUME_DOWN  = 'Z2DOWN';
 
-    public function invoke(int $zoneNumber) : Response
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
+    {
+        $zoneNumber = $this->getZoneNumber($request);
+        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    private function invoke(int $zoneNumber) : ResponseBody
     {
         return $this->invokeHttpGet($zoneNumber);
     }
 
-    private function invokeHttpGet(int $zoneNumber) : Response
+    private function invokeHttpGet(int $zoneNumber) : ResponseBody
     {
         $url  = sprintf(
             'http://%s/goform/formiPhoneAppDirect.xml?%s',
@@ -39,10 +51,10 @@ class Down implements Command
                 return $command->invoke($zoneNumber);
             }
 
-            return new Response(true, $zoneNumber, $data);
+            return new ResponseBody(true, $zoneNumber, $data);
         }
 
-        return new Response(true, $zoneNumber, 'Failed to invoke ' . $url);
+        return new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 
     private function getMicroseconds(float $seconds) : int

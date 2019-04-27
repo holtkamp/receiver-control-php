@@ -6,12 +6,11 @@ namespace ReceiverControl\Command\Volume;
 
 use DOMDocument;
 use DOMXPath;
-use ReceiverControl\Command;
-use ReceiverControl\Command\Response;
+use ReceiverControl\Command\ResponseBody;
 use RuntimeException;
 use function sprintf;
 
-class Get implements Command
+final class Get
 {
     /**
      * @see https://denon.custhelp.com/app/answers/detail/a_id/136/~/relative-and-absolute-volume-ranges
@@ -23,12 +22,12 @@ class Get implements Command
     /** @var string */
     private $xPathQuery = '/item/MasterVolume/value';
 
-    public function invoke(int $zoneNumber = 1) : Response
+    public function invoke(int $zoneNumber) : ResponseBody
     {
         return $this->invokeWithDomDocument($zoneNumber);
     }
 
-    private function invokeWithDomDocument(int $zoneNumber) : Response
+    private function invokeWithDomDocument(int $zoneNumber) : ResponseBody
     {
         $url = sprintf(
             'http://%s/goform/form%sXmlStatusLite.xml',
@@ -40,8 +39,8 @@ class Get implements Command
         $result = $dom->load($url);
 
         return $result === true
-            ? new Response(true, $zoneNumber, $this->convertDecibelToRawVolume($this->getVolumeFromDOM($dom)))
-            : new Response(true, $zoneNumber, 'Failed to invoke ' . $url);
+            ? new ResponseBody(true, $zoneNumber, $this->convertDecibelToRawVolume($this->getVolumeFromDOM($dom)))
+            : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 
     private function convertDecibelToRawVolume(float $volume) : float

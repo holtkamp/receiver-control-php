@@ -19,6 +19,7 @@
   "require": {
     "php": "^7.3",
     "ext-dom": "*",
+    "ext-json": "*",
     "beberlei/assert": "^2.9",
     "slim/slim": "4.0.0-alpha",
     "slim/psr7": "dev-master"

@@ -4,28 +4,39 @@ declare(strict_types=1);
 
 namespace ReceiverControl\Command\Device;
 
-use ReceiverControl\Command;
-use ReceiverControl\Command\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use ReceiverControl\Command\ResponseBody;
+use ReceiverControl\Command\ZoneNumberAware;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
 
-class Info implements Command
+final class Info
 {
+    use ZoneNumberAware;
 
-    public function invoke(int $zoneNumber) : Response
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
+    {
+        $zoneNumber = $this->getZoneNumber($request);
+        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    private function invoke(int $zoneNumber) : ResponseBody
     {
         return $this->invokeHttpGet($zoneNumber);
     }
 
-    private function invokeHttpGet(int $zoneNumber) : Response
+    private function invokeHttpGet(int $zoneNumber) : ResponseBody
     {
         $url  = sprintf('http://%s/goform/Deviceinfo.xml', 'denon');
         $data = file_get_contents($url);
         if (is_string($data)) {
-            return new Response(true, $zoneNumber, $data, $url);
+            return new ResponseBody(true, $zoneNumber, $data, $url);
         }
 
-        return new Response(true, $zoneNumber, 'Failed to invoke ' . $url);
+        return new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 }
