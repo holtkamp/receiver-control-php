@@ -6,12 +6,17 @@ namespace ReceiverControl\Command\Volume;
 
 use DOMDocument;
 use DOMXPath;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
+use ReceiverControl\Command\ZoneNumberAware;
 use RuntimeException;
 use function sprintf;
 
 final class Get
 {
+    use ZoneNumberAware;
+
     /**
      * @see https://denon.custhelp.com/app/answers/detail/a_id/136/~/relative-and-absolute-volume-ranges
      *
@@ -21,6 +26,14 @@ final class Get
 
     /** @var string */
     private $xPathQuery = '/item/MasterVolume/value';
+
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
+    {
+        $zoneNumber = $this->getZoneNumber($request);
+        $response->getBody()->write($this->invoke($zoneNumber)->getJSON());
+
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function invoke(int $zoneNumber) : ResponseBody
     {

@@ -9,7 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use ReceiverControl\Command\ResponseBody;
 use ReceiverControl\Command\ZoneNumberAware;
+use RuntimeException;
 use function file_get_contents;
+use function is_array;
 use function is_string;
 use function sprintf;
 
@@ -32,7 +34,12 @@ final class Select
 
     private function getSourceInput(ServerRequestInterface $request) : string
     {
-        return $_POST['sourceInput'];
+        $parameters = $request->getParsedBody();
+        if (is_array($parameters)) {
+            return $parameters['sourceInput'];
+        }
+
+        throw new RuntimeException('Expected an array of POSTed parameters');
     }
 
     private function invoke(int $zoneNumber, string $sourceInput = null) : ResponseBody

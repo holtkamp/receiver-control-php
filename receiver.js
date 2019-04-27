@@ -16,6 +16,8 @@ let asynchronousRequest = function (data, callback) {
         url: "/" + data.command ? data.command : '',
         method: "POST",
         async: true,
+        //Required because the default "application/x-www-form-urlencoded; charset=UTF-8" is not detected by Slim ServerRequestFactory
+        contentType: "application/x-www-form-urlencoded",
         data: data,
         dataType: "json",
         success: function (result) {

@@ -5,12 +5,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use ReceiverControl\Container;
 use Slim\Factory\AppFactory;
-use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 
 AppFactory::setContainer(new Container());
 $application = AppFactory::create();
-$application->add(new BodyParamsMiddleware()); //Required to properly extract posted content from the request object
-
 $application->get('/', function (Request $request, Response $response, $args): Response {
     $content = require __DIR__ . '/index.phtml';
     $response->getBody()->write($content);
@@ -25,9 +22,10 @@ $postCommands = [
     \ReceiverControl\Command\Power\On::class,
     \ReceiverControl\Command\Source\Select::class,
     \ReceiverControl\Command\Volume\Down::class,
-    \ReceiverControl\Command\Volume\Up::class,
+    \ReceiverControl\Command\Volume\Get::class,
     \ReceiverControl\Command\Volume\Mute::class,
     \ReceiverControl\Command\Volume\Set::class,
+    \ReceiverControl\Command\Volume\Up::class,
 ];
 
 foreach($postCommands as $postCommand){
