@@ -5,14 +5,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use ReceiverControl\Container;
 use Slim\Factory\AppFactory;
-use Slim\Middleware\RoutingMiddleware;
+use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 
 AppFactory::setContainer(new Container());
 $application = AppFactory::create();
-
-$routeResolver = $application->getRouteResolver();
-$routingMiddleware = new RoutingMiddleware($routeResolver);
-$application->add($routingMiddleware);
+$application->add(new BodyParamsMiddleware()); //Required to properly extract posted content from the request object
 
 $application->get('/', function (Request $request, Response $response, $args): Response {
     $content = require __DIR__ . '/index.phtml';

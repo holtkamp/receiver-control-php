@@ -22,7 +22,8 @@
     "ext-json": "*",
     "beberlei/assert": "^2.9",
     "slim/slim": "4.0.0-alpha",
-    "slim/psr7": "dev-master"
+    "slim/psr7": "dev-master",
+    "zendframework/zend-expressive-helpers": "^5.3"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",

@@ -32,8 +32,8 @@ final class Set
 
     private function getVolume(ServerRequestInterface $request) : float
     {
-        $parameters = $_POST; //TODO: why not available in $request->getParsedBody() ?
-        if (array_key_exists('volume', $parameters)) {
+        $parameters = $request->getParsedBody();
+        if (is_array($parameters) && array_key_exists('volume', $parameters)) {
             return (float) $parameters['volume'];
         }
 
