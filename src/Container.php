@@ -10,7 +10,7 @@ use function class_exists;
 
 class Container implements ContainerInterface
 {
-    /** @var array */
+    /** @var object[] */
     private $resources = [];
 
     public function __get(string $id) : object
