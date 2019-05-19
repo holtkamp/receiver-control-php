@@ -5,3 +5,8 @@ body{
 input[type=range]{
     width: 100%;
 }
+
+.jumbotron{
+    padding: 30px;
+    margin-bottom: 15px;
+}
