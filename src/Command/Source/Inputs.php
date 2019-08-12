@@ -11,6 +11,7 @@ class Inputs
         'BD' => 'Blu-Ray',
         'MPLAY' => 'Media Player',
         'TUNER' => 'Tuner',
+        'TV' => 'TV',
     ];
 
     public static function getSourceInputs() : array
