@@ -21,8 +21,8 @@
     "ext-dom": "*",
     "ext-json": "*",
     "beberlei/assert": "^2.9",
-    "slim/slim": "4.0.0-alpha",
-    "slim/psr7": "dev-master",
+    "slim/slim": "^4.1",
+    "slim/psr7": "^0.4",
     "slim/php-view": "^2.2"
   },
   "require-dev": {
