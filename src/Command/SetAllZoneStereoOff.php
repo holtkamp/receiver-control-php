@@ -10,13 +10,15 @@ use ReceiverControl\Psr7\JsonAwareResponse;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
+use function urlencode;
 
-final class SetAllZoneStereo
+final class SetAllZoneStereoOff
 {
     use JsonAwareResponse;
     use ZoneNumberAware;
 
-    private const ALL_ZONE_STEREO = 'MN';
+    private const ALL_ZONE_STEREO     = 'MN';
+    private const ALL_ZONE_STEREO_OFF = 'ZST OFF';
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {
@@ -28,20 +30,21 @@ final class SetAllZoneStereo
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url  = $this->getUrl();
+        $url  = $this->getUrlOff();
         $data = file_get_contents($url);
 
         return is_string($data)
-            ? new ResponseBody(true, $zoneNumber, $data)
+            ? new ResponseBody(true, $zoneNumber, $url)
             : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 
-    private function getUrl() : string
+    private function getUrlOff() : string
     {
         return sprintf(
-            'http://%s/goform/formiPhoneAppDirect.xml?%s',
+            'http://%s/goform/formiPhoneAppDirect.xml?%s%s',
             'denon',
-            self::ALL_ZONE_STEREO
+            self::ALL_ZONE_STEREO,
+            urlencode(self::ALL_ZONE_STEREO_OFF)
         );
     }
 }

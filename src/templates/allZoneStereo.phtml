@@ -3,9 +3,12 @@
 declare(strict_types=1);
 
 use ReceiverControl\Command\Device\Info;
+use ReceiverControl\Command\SetAllZoneStereoOn;
+use ReceiverControl\Command\SetAllZoneStereoOff;
 
 $commands = [
-    Info::class => 'Info',
+    SetAllZoneStereoOn::class => 'AllZoneStereoOn',
+    SetAllZoneStereoOff::class => 'AllZoneStereoOff',
 ];
 ?>
 
