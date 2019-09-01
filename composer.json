@@ -21,9 +21,13 @@
     "ext-dom": "*",
     "ext-json": "*",
     "beberlei/assert": "^2.9",
+    "bower-asset/bootstrap": "^4.3",
+    "bower-asset/jquery": "^3.4",
     "slim/slim": "^4.1",
     "slim/psr7": "^0.4",
-    "slim/php-view": "^2.2"
+    "slim/php-view": "^2.2",
+    "fxp/composer-asset-plugin": "^1.4",
+    "bower-asset/open-iconic": "^1.1"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",
