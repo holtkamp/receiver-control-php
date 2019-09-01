@@ -11,19 +11,17 @@ $commands = [
 ];
 ?>
 
-<div class="jumbotron">
-    <div class="row">
-        <div class="col">
-            <div class="btn-group d-flex">
-                <?php
-                foreach ($commands as $command => $label) {
-                    echo sprintf('<button class="switchable btn btn-outline-secondary text-nowrap" data-command="%s"><span class="oi oi-audio"></span> %s</button>',
-                        $command,
-                        $label
-                    );
-                }
-                ?>
-            </div>
+<div class="row">
+    <div class="col">
+        <div class="btn-group d-flex">
+            <?php
+            foreach ($commands as $command => $label) {
+                echo sprintf('<button class="switchable btn btn-outline-secondary text-nowrap" data-command="%s"><span class="oi oi-audio"></span> %s</button>',
+                    $command,
+                    $label
+                );
+            }
+            ?>
         </div>
     </div>
 </div>
