@@ -9,9 +9,7 @@ use ReceiverControl\Command\Source\Select;
 <div class="jumbotron">
     <div class="row">
         <div class="col">
-            <strong><span class="oi oi-musical-note"></span> Source: </strong>
-            <div class="btn-group">
-
+            <div class="btn-group d-flex">
                 <?php
                 foreach (Inputs::getSourceInputs() as $sourceInputKey => $sourceInputValue) {
                     echo sprintf('<button class="switchable btn btn-outline-secondary text-nowrap" data-command="%s" data-source-input="%s">%s</button>',
