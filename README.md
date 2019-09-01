@@ -1,5 +1,7 @@
 # Denon receiver remote control
-
-`php -S 0.0.0.0:9000`
-
-
+ - Install dependencies using Composer
+    - `composer install`
+ - Start local web server
+    - `php -S 0.0.0.0:9000`
+ - Op browser at http://0.0.0.0:9000
+  
