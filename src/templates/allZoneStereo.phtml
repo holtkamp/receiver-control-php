@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-use ReceiverControl\Command\Device\Info;
-use ReceiverControl\Command\SetAllZoneStereoOn;
-use ReceiverControl\Command\SetAllZoneStereoOff;
+use ReceiverControl\Command\AllZoneStereo\Disable as DisableAllZoneStereo;
+use ReceiverControl\Command\AllZoneStereo\Enable as EnableAllZoneStereo;
 
 $commands = [
-    SetAllZoneStereoOn::class => 'AllZoneStereoOn',
-    SetAllZoneStereoOff::class => 'AllZoneStereoOff',
+    EnableAllZoneStereo::class => 'Enable',
+    DisableAllZoneStereo::class => 'Disable',
 ];
 ?>
 
 <div class="jumbotron">
     <div class="row">
         <div class="col">
+            <strong><span class="oi oi-audio"></span> All Zone Stereo: </strong>
             <div class="btn-group">
                 <?php
                 foreach ($commands as $command => $label) {
-                    echo sprintf('<button class="switchable btn btn-outline-secondary text-nowrap" data-command="%s">%s</button>',
+                    echo sprintf('<button class="switchable btn btn-outline-secondary text-nowrap" data-command="%s"> %s</button>',
                         $command,
                         $label
                     );

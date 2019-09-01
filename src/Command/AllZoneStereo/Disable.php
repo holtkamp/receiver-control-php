@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace ReceiverControl\Command;
+namespace ReceiverControl\Command\AllZoneStereo;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use ReceiverControl\Command\ResponseBody;
+use ReceiverControl\Command\ZoneNumberAware;
 use ReceiverControl\Psr7\JsonAwareResponse;
 use function file_get_contents;
 use function is_string;
 use function sprintf;
 use function urlencode;
 
-final class SetAllZoneStereoOff
+final class Disable
 {
     use JsonAwareResponse;
     use ZoneNumberAware;

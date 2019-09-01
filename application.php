@@ -19,8 +19,8 @@ $application->get('/', function (Request $request, Response $response, $args): R
 });
 
 $postCommands = [
-    \ReceiverControl\Command\SetAllZoneStereoOn::class,
-    \ReceiverControl\Command\SetAllZoneStereoOff::class,
+    \ReceiverControl\Command\AllZoneStereo\Disable::class,
+    \ReceiverControl\Command\AllZoneStereo\Enable::class,
     \ReceiverControl\Command\Device\Info::class,
     \ReceiverControl\Command\Power\Off::class,
     \ReceiverControl\Command\Power\On::class,
