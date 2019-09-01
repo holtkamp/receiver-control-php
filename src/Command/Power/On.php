@@ -33,11 +33,21 @@ final class On
      */
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url  = sprintf('http://%s/goform/formiPhoneAppPower.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_POWER_ON);
+        $url  = $this->getUrl($zoneNumber);
         $data = file_get_contents($url);
 
         return is_string($data)
             ? new ResponseBody(true, $zoneNumber, $data, $url)
             : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
+    }
+
+    private function getUrl(int $zoneNumber) : string
+    {
+        return sprintf(
+            'http://%s/goform/formiPhoneAppPower.xml?%d+%s',
+            'denon',
+            $zoneNumber,
+            self::PARAMETER_POWER_ON
+        );
     }
 }

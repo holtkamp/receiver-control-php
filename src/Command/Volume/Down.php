@@ -33,11 +33,7 @@ final class Down
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url  = sprintf(
-            'http://%s/goform/formiPhoneAppDirect.xml?%s',
-            'denon',
-            $zoneNumber === 1 ? self::MASTER_VOLUME_DOWN : self::ZONE2_VOLUME_DOWN
-        );
+        $url  = $this->getUrl($zoneNumber);
         $data = file_get_contents($url);
         if (is_string($data)) {
             if ($data === '') {
@@ -57,5 +53,14 @@ final class Down
     private function getMicroseconds(float $seconds) : int
     {
         return (int) $seconds * 1000000;
+    }
+
+    private function getUrl(int $zoneNumber) : string
+    {
+        return sprintf(
+            'http://%s/goform/formiPhoneAppDirect.xml?%s',
+            'denon',
+            $zoneNumber === 1 ? self::MASTER_VOLUME_DOWN : self::ZONE2_VOLUME_DOWN
+        );
     }
 }

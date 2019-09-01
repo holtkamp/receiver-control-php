@@ -28,16 +28,20 @@ final class SetAllZoneStereo
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url  = sprintf(
+        $url  = $this->getUrl();
+        $data = file_get_contents($url);
+
+        return is_string($data)
+            ? new ResponseBody(true, $zoneNumber, $data)
+            : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
+    }
+
+    private function getUrl() : string
+    {
+        return sprintf(
             'http://%s/goform/formiPhoneAppDirect.xml?%s',
             'denon',
             self::ALL_ZONE_STEREO
         );
-        $data = file_get_contents($url);
-        if (is_string($data)) {
-            return new ResponseBody(true, $zoneNumber, $data);
-        }
-
-        return new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
     }
 }

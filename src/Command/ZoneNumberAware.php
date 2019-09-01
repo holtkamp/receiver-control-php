@@ -12,10 +12,9 @@ trait ZoneNumberAware
     private function getIndicatedZoneNumber(ServerRequestInterface $request) : int
     {
         $parameters = $request->getParsedBody();
-        if (is_array($parameters) && array_key_exists('zoneNumber', $parameters)) {
-            return (int) $parameters['zoneNumber'];
-        }
 
-        return 1;
+        return is_array($parameters) && array_key_exists('zoneNumber', $parameters)
+            ? (int) $parameters['zoneNumber']
+            : 1;
     }
 }

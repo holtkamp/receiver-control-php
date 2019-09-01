@@ -47,6 +47,7 @@ final class Select
     {
         $url  = sprintf('http://%s/goform/formiPhoneAppDirect.xml?SI%s', 'denon', $sourceInput);
         $data = file_get_contents($url);
+
         return is_string($data)
             ? new ResponseBody(true, $zoneNumber, $data, $url)
             : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);

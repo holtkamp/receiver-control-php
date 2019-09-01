@@ -33,11 +33,7 @@ final class Up
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url  = sprintf(
-            'http://%s/goform/formiPhoneAppDirect.xml?%s',
-            'denon',
-            $zoneNumber === 1 ? self::MASTER_VOLUME_UP : self::ZONE2_VOLUME_UP
-        );
+        $url  = $this->getUrl($zoneNumber);
         $data = file_get_contents($url);
         if (is_string($data)) {
             if ($data === '') {
@@ -51,6 +47,15 @@ final class Up
         }
 
         return new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
+    }
+
+    private function getUrl(int $zoneNumber) : string
+    {
+        return sprintf(
+            'http://%s/goform/formiPhoneAppDirect.xml?%s',
+            'denon',
+            $zoneNumber === 1 ? self::MASTER_VOLUME_UP : self::ZONE2_VOLUME_UP
+        );
     }
 
     private function getMicroseconds(float $seconds) : int

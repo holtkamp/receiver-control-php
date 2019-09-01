@@ -39,18 +39,22 @@ final class Get
 
     public function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url = sprintf(
-            'http://%s/goform/form%sXmlStatusLite.xml',
-            'denon',
-            $zoneNumber === 1 ? 'MainZone_MainZone' : 'Zone2_Zone2'
-        );
-
+        $url    = $this->getUrl($zoneNumber);
         $dom    = new DOMDocument();
         $result = $dom->load($url);
 
         return $result === true
             ? new ResponseBody(true, $zoneNumber, $this->convertDecibelToRawVolume($this->getVolumeFromDOM($dom)))
             : new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
+    }
+
+    private function getUrl(int $zoneNumber) : string
+    {
+        return sprintf(
+            'http://%s/goform/form%sXmlStatusLite.xml',
+            'denon',
+            $zoneNumber === 1 ? 'MainZone_MainZone' : 'Zone2_Zone2'
+        );
     }
 
     private function convertDecibelToRawVolume(float $volume) : float

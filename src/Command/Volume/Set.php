@@ -44,14 +44,7 @@ final class Set
 
     private function getResponseBody(int $zoneNumber, float $volume) : ResponseBody
     {
-        $flattenedVolume = $this->flattenVolume($volume);
-        $url             = sprintf(
-            'http://%s/goform/formiPhoneAppDirect.xml?%s%s',
-            'denon',
-            $zoneNumber === 1 ? self::MASTER_VOLUME_SET : self::ZONE2_VOLUME_SET,
-            $flattenedVolume
-        );
-
+        $url  = $this->getUrl($zoneNumber, $volume);
         $data = file_get_contents($url);
         if (is_string($data)) {
             if ($data === '') {
@@ -62,6 +55,17 @@ final class Set
         }
 
         return new ResponseBody(true, $zoneNumber, 'Failed to invoke ' . $url);
+    }
+
+    private function getUrl(int $zoneNumber, float $volume) : string
+    {
+        $flattenedVolume = $this->flattenVolume($volume);
+        return sprintf(
+            'http://%s/goform/formiPhoneAppDirect.xml?%s%s',
+            'denon',
+            $zoneNumber === 1 ? self::MASTER_VOLUME_SET : self::ZONE2_VOLUME_SET,
+            $flattenedVolume
+        );
     }
 
     /**

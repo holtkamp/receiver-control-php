@@ -34,8 +34,7 @@ final class Mute
 
     private function getResponseBody(int $zoneNumber) : ResponseBody
     {
-        $url = sprintf('http://%s/goform/formiPhoneAppMute.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_MUTE_ON);
-
+        $url    = $this->getUrl($zoneNumber);
         $dom    = new DOMDocument();
         $result = $dom->load($url);
 
@@ -47,6 +46,11 @@ final class Mute
     private function isMuted(string $muteState) : bool
     {
         return $muteState === 'on';
+    }
+
+    private function getUrl(int $zoneNumber) : string
+    {
+        return sprintf('http://%s/goform/formiPhoneAppMute.xml?%d+%s', 'denon', $zoneNumber, self::PARAMETER_MUTE_ON);
     }
 
     private function getMuteStatusFromDom(DOMDocument $dom) : string
