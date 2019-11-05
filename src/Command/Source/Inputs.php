@@ -8,7 +8,7 @@ class Inputs
 {
     /** @var array */
     private static $sourceInputs = [
-        'BD' => 'Blu-Ray',
+        'BD' => 'Chromecast',
         'MPLAY' => 'Media Player',
         'TUNER' => 'Tuner',
         'TV' => 'TV',
