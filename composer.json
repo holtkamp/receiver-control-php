@@ -28,9 +28,9 @@
     "bower-asset/jquery": "^3.4",
     "bower-asset/open-iconic": "^1.1",
     "fxp/composer-asset-plugin": "^1.4",
-    "slim/psr7": "^0.4",
     "slim/php-view": "^2.2",
-    "slim/slim": "^4.1"
+    "slim/psr7": "^0.6.0",
+    "slim/slim": "^4.3"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable",
