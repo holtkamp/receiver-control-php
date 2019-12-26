@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ReceiverControl\Command\Volume;
 
 use DOMDocument;
+use DOMNodeList;
 use DOMXPath;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -64,8 +65,10 @@ final class Get
 
     private function getVolumeFromDOM(DOMDocument $dom) : float
     {
-        $xpath = new DOMXPath($dom);
-        $node  = $xpath->query($this->xPathQuery)->item(0);
+        $xpath  = new DOMXPath($dom);
+        $result = $xpath->query($this->xPathQuery);
+        assert($result instanceof DOMNodeList);
+        $node = $result->item(0);
 
         if ($node === null) {
             throw new RuntimeException('No node found to determine the volume');

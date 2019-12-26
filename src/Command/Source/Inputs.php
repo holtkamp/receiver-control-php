@@ -6,14 +6,17 @@ namespace ReceiverControl\Command\Source;
 
 class Inputs
 {
-    /** @var array */
+    /** @var array<string, string> */
     private static $sourceInputs = [
         'BD' => 'Chromecast',
-        'MPLAY' => 'Media Player',
+        'MPLAY' => 'MacMini',
         'TUNER' => 'Tuner',
         'TV' => 'TV',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSourceInputs() : array
     {
         return self::$sourceInputs;

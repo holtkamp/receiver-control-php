@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ReceiverControl\Command;
 
 use function get_object_vars;
-use function is_string;
 use function json_encode;
 
 class ResponseBody
@@ -35,11 +34,12 @@ class ResponseBody
 
     public function getJSON() : string
     {
-        $result = json_encode(get_object_vars($this));
-
-        return is_string($result) ? $result : '';
+        return json_encode(get_object_vars($this), \JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray() : array
     {
         return get_object_vars($this);
