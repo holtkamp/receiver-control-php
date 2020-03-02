@@ -11,7 +11,7 @@ use function class_exists;
 class Container implements ContainerInterface
 {
     /** @var object[] */
-    private $resources = [];
+    private array $resources = [];
 
     public function __get(string $id) : object
     {

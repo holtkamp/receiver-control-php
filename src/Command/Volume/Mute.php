@@ -22,8 +22,7 @@ final class Mute
 
     private const PARAMETER_MUTE_ON = 'MuteOn';
 
-    /** @var string */
-    private $xPathQuery = '/item/Mute/value';
+    private string $xPathQuery = '/item/Mute/value';
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {

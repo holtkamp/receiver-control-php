@@ -60,6 +60,6 @@ final class Up
 
     private function getMicroseconds(float $seconds) : int
     {
-        return (int) $seconds * 1000000;
+        return (int) $seconds * 1_000_000;
     }
 }

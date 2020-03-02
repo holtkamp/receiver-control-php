@@ -20,15 +20,10 @@ final class Get
     use JsonAwareResponse;
     use ZoneNumberAware;
 
-    /**
-     * @see https://denon.custhelp.com/app/answers/detail/a_id/136/~/relative-and-absolute-volume-ranges
-     *
-     * @var float
-     */
-    private $referenceVolume = 80;
+    /** @see https://denon.custhelp.com/app/answers/detail/a_id/136/~/relative-and-absolute-volume-ranges */
+    private int $referenceVolume = 80;
 
-    /** @var string */
-    private $xPathQuery = '/item/MasterVolume/value';
+    private string $xPathQuery = '/item/MasterVolume/value';
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface
     {

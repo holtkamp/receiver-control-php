@@ -7,7 +7,7 @@ namespace ReceiverControl\Command\Source;
 class Inputs
 {
     /** @var array<string, string> */
-    private static $sourceInputs = [
+    private static array $sourceInputs = [
         'BD' => 'Chromecast',
         'MPLAY' => 'MacMini',
         'TUNER' => 'Tuner',

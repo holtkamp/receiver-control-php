@@ -9,17 +9,14 @@ use function json_encode;
 
 class ResponseBody
 {
-    /** @var bool */
-    public $valid;
+    public bool $valid;
 
     /** @var mixed */
     public $message;
 
-    /** @var int */
-    public $zoneNumber;
+    public int $zoneNumber;
 
-    /** @var ?string */
-    public $debugMessage;
+    public ?string $debugMessage;
 
     /**
      * @param mixed $message

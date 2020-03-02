@@ -52,7 +52,7 @@ final class Down
 
     private function getMicroseconds(float $seconds) : int
     {
-        return (int) $seconds * 1000000;
+        return (int) $seconds * 1_000_000;
     }
 
     private function getUrl(int $zoneNumber) : string

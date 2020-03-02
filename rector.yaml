@@ -1,0 +1,8 @@
+# rector.yaml
+parameters:
+  sets:
+    - 'code-quality'
+    - 'php71'
+    - 'php72'
+    - 'php73'
+    - 'php74'

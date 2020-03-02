@@ -20,7 +20,7 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^7.3",
+    "php": "~7.4",
     "ext-dom": "*",
     "ext-json": "*",
     "beberlei/assert": "^2.9",
@@ -36,12 +36,15 @@
     "phpstan/phpstan": "@stable",
     "phpstan/phpstan-deprecation-rules": "@stable",
     "phpstan/phpstan-strict-rules": "@stable",
+    "rector/rector": "@stable",
     "roave/security-advisories": "dev-master",
-    "slevomat/coding-standard": "@stable"
+    "slevomat/coding-standard": "@stable",
+    "squizlabs/php_codesniffer": "@stable"
   },
   "scripts": {
-    "phpcs": "./vendor/bin/phpcs --cache=./.phpcs.cache.php --standard=phpcs.xml -sp",
-    "phpcbf": "./vendor/bin/phpcbf --standard=phpcs.xml -p",
-    "phpstan": "./vendor/bin/phpstan analyse"
+    "phpcs": "vendor/bin/phpcs --cache=./.phpcs.cache.php --standard=phpcs.xml -sp",
+    "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml -p",
+    "phpstan": "vendor/bin/phpstan analyse",
+    "rector": "vendor/bin/rector process src"
   }
 }
