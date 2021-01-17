@@ -10,8 +10,16 @@ use function class_exists;
 
 class Container implements ContainerInterface
 {
-    /** @var object[] */
-    private array $resources = [];
+    /** @var array<string, object> */
+    private array $resources;
+
+    /**
+     * @param array<string, object>
+     */
+    public function __construct(array $resources = [])
+    {
+        $this->resources = $resources;
+    }
 
     public function __get(string $id) : object
     {

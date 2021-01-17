@@ -1,16 +1,9 @@
 {
-  "name": "gordywills/receiver-control",
-  "description": "a single page app to remotely control my Pioneer VSX-930 receiver via telnet",
+  "name": "holtkamp/receiver-control",
+  "description": "a single page app to remotely control my receiver",
   "type": "project",
   "prefer-stable": true,
   "minimum-stability": "dev",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Gordy Wills",
-      "email": "gordy.wills@gmail.com"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "ReceiverControl\\": "src/"
@@ -19,8 +12,14 @@
   "config": {
     "sort-packages": true
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/holtkamp/PHP-View.git"
+    }
+  ],
   "require": {
-    "php": "~7.4",
+    "php": "^7.4 || ^8.0",
     "ext-dom": "*",
     "ext-json": "*",
     "beberlei/assert": "^2.9",
@@ -28,8 +27,8 @@
     "bower-asset/jquery": "^3.4",
     "bower-asset/open-iconic": "^1.1",
     "fxp/composer-asset-plugin": "^1.4",
-    "slim/php-view": "^2.2",
-    "slim/psr7": "^0.6.0",
+    "slim/php-view": "dev-allow-php-8",
+    "slim/psr7": "^1.0",
     "slim/slim": "^4.3"
   },
   "require-dev": {
@@ -40,11 +39,5 @@
     "roave/security-advisories": "dev-master",
     "slevomat/coding-standard": "@stable",
     "squizlabs/php_codesniffer": "@stable"
-  },
-  "scripts": {
-    "phpcs": "vendor/bin/phpcs --cache=./.phpcs.cache.php --standard=phpcs.xml -sp",
-    "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml -p",
-    "phpstan": "vendor/bin/phpstan analyse",
-    "rector": "vendor/bin/rector process src"
   }
 }
